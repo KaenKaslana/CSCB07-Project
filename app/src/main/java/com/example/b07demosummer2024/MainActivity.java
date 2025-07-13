@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -35,6 +37,13 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
+
+    }
+    public void exitAppAndRedirect(View view){
+        String websiteUrl = "https://www.google.com";
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl));
+        startActivity(browserIntent);
+        finishAffinity();
     }
 
     private void loadFragment(Fragment fragment) {
