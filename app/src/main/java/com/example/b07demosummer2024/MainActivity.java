@@ -26,17 +26,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
+        db = FirebaseDatabase.getInstance("https://cscb07-group-2-default-rtdb.firebaseio.com/");
         DatabaseReference myRef = db.getReference("testDemo");
 
-//        myRef.setValue("B07 Demo!");
-        myRef.child("movies").setValue("B07 Demo!");
 
-        if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
-        }
+
+      //loadFragment(new HomeFragment());
+          OpenQuestionActivity();
     }
 
+    private void OpenQuestionActivity() {
+    Intent intent = new Intent(this, QuestionView.class);
+    startActivity(intent);
+
+    }
+    void testDB() {
+        DatabaseReference ref = db.getReference("Q&A");
+
+        ref.child("q1").setValue("the answer the q1 is 42");
+
+    }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
