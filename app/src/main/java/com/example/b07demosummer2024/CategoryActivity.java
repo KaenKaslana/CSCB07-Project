@@ -30,10 +30,9 @@ public class CategoryActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button contactsButton = findViewById(R.id.contactsButton);
-        contactsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CategoryActivity.this, ActionActivity.class);
-            intent.putExtra("category", "Contacts");
+        Button emergencyContactsButton = findViewById(R.id.contactsButton);
+        emergencyContactsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CategoryActivity.this, EmergencyContactsActivity.class);
             startActivity(intent);
         });
 

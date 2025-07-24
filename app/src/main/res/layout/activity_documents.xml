@@ -1,21 +1,41 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- Select file to upload -->
+    <Button
+        android:id="@+id/selectFileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select File to Upload" />
+
+    <!-- Upload file button -->
+    <Button
+        android:id="@+id/uploadFileButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Upload File to Firebase"
+        android:layout_marginTop="8dp" />
+
+    <!-- Divider title -->
     <TextView
+        android:id="@+id/fileListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/upload_edit_or_delete_documents_here"
+        android:layout_marginTop="16dp"
+        android:text="Uploaded Documents"
+        android:textStyle="bold"
         android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/uploadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/upload_change_to_firebase"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp" />
+    <!-- RecyclerView for file list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fileRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp" />
+</LinearLayout>
 
-</RelativeLayout>
