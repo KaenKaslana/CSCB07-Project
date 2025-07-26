@@ -31,8 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-      //loadFragment(new HomeFragment());
-          OpenQuestionActivity();
+      QuestionView.loadQuestionsFromAssets(this);
+    //       OpenQuestionActivity();
+      loadFragment(new HomeFragment());
+
     }
 
     private void OpenQuestionActivity() {

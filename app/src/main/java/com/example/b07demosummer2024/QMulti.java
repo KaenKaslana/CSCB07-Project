@@ -72,10 +72,11 @@ IListenClick listen;
                         }
                     } else {
                         // fire event
+                        selected.clear();
                         if(listen!=null) {listen.Click(option.getText().toString());}
                             if(currentSelected != null) {
                                 currentSelected.setChecked(false);
-                                selected.remove(option.getText().toString());
+                               // selected.remove(option.getText().toString());
 
                             }else {
                                 currentSelected = option;
