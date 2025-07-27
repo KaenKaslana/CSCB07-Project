@@ -9,9 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.b07demosummer2024.R;
-import com.example.b07demosummer2024.DocumentInfo;
-
 import java.util.List;
 
 public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHolder> {
@@ -19,6 +16,9 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
     private Context context;
     private List<DocumentInfo> documentList;
     private OnItemClickListener listener;
+
+    // Track which item is selected
+    private int selectedPosition = RecyclerView.NO_POSITION;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -39,14 +39,33 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DocumentInfo doc = documentList.get(position);
-        holder.fileName.setText(doc.getName());
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(position));
+        DocumentInfo document = documentList.get(position);
+        holder.fileName.setText(document.name);
+
+        // Apply highlighting based on selection
+        if (selectedPosition == position) {
+            holder.itemView.setBackgroundResource(R.drawable.contact_selected_border);
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.contact_normal_border);
+        }
+
+        holder.itemView.setOnClickListener(v -> {
+            selectedPosition = position;
+            notifyDataSetChanged(); // Refresh to update highlight
+            if (listener != null) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return documentList.size();
+    }
+
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,5 +77,6 @@ public class DocumentAdapter extends RecyclerView.Adapter<DocumentAdapter.ViewHo
         }
     }
 }
+
 
 

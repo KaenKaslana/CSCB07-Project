@@ -1,25 +1,31 @@
 package com.example.b07demosummer2024;
 
 public class DocumentInfo {
-    private String id;
-    private String name;
-    private String url;
+    public String name;
+    public String uri;
 
+    // Required empty constructor for Firebase
     public DocumentInfo() {
-        // Default constructor for Firebase
     }
 
-    public DocumentInfo(String id, String name, String url) {
-        this.id = id;
+    public DocumentInfo(String name, String uri) {
         this.name = name;
-        this.url = url;
+        this.uri = uri;
     }
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public String getUrl() { return url; }
+    public String getName() {
+        return name;
+    }
 
-    public void setId(String id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setUrl(String url) { this.url = url; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 }
