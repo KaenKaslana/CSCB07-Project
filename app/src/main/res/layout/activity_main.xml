@@ -21,33 +21,33 @@
 
     <FrameLayout
         android:id="@+id/fragment_container"
-        android:layout_width="400dp"
-        android:layout_height="700dp"
+        android:layout_width="404dp"
+        android:layout_height="854dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.453">
+        app:layout_constraintVertical_bias="0.568">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
-            android:clickable="true"
-            android:onClick="exitAppAndRedirect"
-            app:backgroundTint="#868EC7"
-            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
+        <Button
+            android:id="@+id/Reminder"
+            android:layout_width="432dp"
+            android:layout_height="61dp"
+            android:layout_gravity="left|bottom"
+            android:text="Reminders" />
     </FrameLayout>
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="112dp"
         android:text="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

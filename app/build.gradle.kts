@@ -39,4 +39,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("androidx.work:work-runtime:2.8.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+
 }
