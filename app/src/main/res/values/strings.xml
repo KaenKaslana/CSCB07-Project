@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">B07 Demo Summer 2024</string>
 
@@ -41,4 +42,10 @@
     <string name="select_file_to_upload_1">Select File to Upload</string>
     <string name="upload_file_to_firebase_1">Upload File to Firebase</string>
     <string name="no_file_selected_yet_1">No file selected yet.</string>
+    <string name="upload_file">Upload File</string>
+    <string name="document_name">Document Name</string>
+    <string name="open_document">Open Document</string>
+    <string name="delete_document">Delete Document</string>
+    <string name="sample_document">Sample Document</string>
 </resources>
+

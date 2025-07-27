@@ -23,9 +23,32 @@
         <activity
             android:name=".AddContactActivity" />
 
+        <!-- Documents to Pack -->
         <activity
-            android:name=".DocumentsActivity"
-            android:exported="false" />
+            android:name=".DocumentActivity" />
+        <activity
+            android:name=".DocumentDetailActivity" />
+
+        <!-- Safe Locations -->
+        <activity
+            android:name=".SafeLocationsActivity" />
+        <activity
+            android:name=".AddSafeLocationActivity" />
+        <activity
+            android:name=".EditSafeLocationActivity" />
+        <activity
+            android:name=".DeleteSafeLocationActivity" />
+
+        <!-- Medications -->
+        <activity
+            android:name=".MedicationActivity" />
+        <activity
+            android:name=".AddMedicationActivity" />
+        <activity
+            android:name=".EditMedicationActivity" />
+        <activity
+            android:name=".DeleteMedicationActivity" />
+
         <activity
             android:name=".ActionActivity"
             android:exported="false" />
@@ -57,5 +80,10 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

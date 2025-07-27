@@ -14,19 +14,19 @@ public class ActionActivity extends AppCompatActivity {
 
         Button addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ActionActivity.this, DocumentsActivity.class);
+            Intent intent = new Intent(ActionActivity.this, DocumentActivity.class);
             startActivity(intent);
         });
 
         Button editButton = findViewById(R.id.editButton);
         editButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ActionActivity.this, DocumentsActivity.class);
+            Intent intent = new Intent(ActionActivity.this, DocumentActivity.class);
             startActivity(intent);
         });
 
         Button deleteButton = findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(v -> {
-            Intent intent = new Intent(ActionActivity.this, DocumentsActivity.class);
+            Intent intent = new Intent(ActionActivity.this, DocumentActivity.class);
             startActivity(intent);
         });
     }

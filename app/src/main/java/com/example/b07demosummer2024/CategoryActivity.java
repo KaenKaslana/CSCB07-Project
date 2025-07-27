@@ -25,8 +25,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         Button documentsButton = findViewById(R.id.documentsButton);
         documentsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CategoryActivity.this, ActionActivity.class);
-            intent.putExtra("category", "Documents");
+            Intent intent = new Intent(CategoryActivity.this, DocumentActivity.class);
             startActivity(intent);
         });
 
@@ -36,19 +35,16 @@ public class CategoryActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button locationsButton = findViewById(R.id.locationsButton);
-        locationsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CategoryActivity.this, ActionActivity.class);
-            intent.putExtra("category", "Locations");
+        Button safeLocationsButton = findViewById(R.id.locationsButton);
+        safeLocationsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CategoryActivity.this, SafeLocationsActivity.class);
             startActivity(intent);
         });
 
         Button medicationsButton = findViewById(R.id.medicationsButton);
         medicationsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CategoryActivity.this, ActionActivity.class);
-            intent.putExtra("category", "Medications");
+            Intent intent = new Intent(CategoryActivity.this, MedicationActivity.class);
             startActivity(intent);
         });
-
     }
 }
