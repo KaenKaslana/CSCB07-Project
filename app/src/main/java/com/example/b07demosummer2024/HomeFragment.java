@@ -18,14 +18,14 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
-        Button buttonQuestionnaire    = view.findViewById(R.id.buttonQuestionnaire);
-        Button buttonScroller         = view.findViewById(R.id.buttonScroller);
-        Button buttonSpinner          = view.findViewById(R.id.buttonSpinner);
-        Button buttonManageItems      = view.findViewById(R.id.buttonManageItems);
-        Button buttonSupportConnection= view.findViewById(R.id.buttonSupportConnection);
+        Button buttonQuestionnaire = view.findViewById(R.id.buttonQuestionnaire);
+        Button buttonScroller = view.findViewById(R.id.buttonScroller);
+        Button buttonSpinner = view.findViewById(R.id.buttonSpinner);
+        Button buttonManageItems = view.findViewById(R.id.buttonManageItems);
+        Button buttonSupportConnection = view.findViewById(R.id.buttonSupportConnection);
 
         buttonQuestionnaire.setOnClickListener(v ->
-                loadFragment(new QuestionnaireFragment())
+                loadFragment(new QuestionView())
         );
 
         buttonScroller.setOnClickListener(v ->
@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         buttonManageItems.setOnClickListener(v ->
                 loadFragment(new ManageItemsFragment())
         );
-        buttonManageItems.setOnClickListener(v ->
+        buttonSupportConnection.setOnClickListener(v ->
                 loadFragment(new SupportConnectionFragment())
         );
 

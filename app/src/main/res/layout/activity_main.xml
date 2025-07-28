@@ -27,7 +27,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
- feature/no-ref/emergency-exit-button
         app:layout_constraintVertical_bias="0.453">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

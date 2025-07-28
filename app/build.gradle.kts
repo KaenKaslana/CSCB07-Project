@@ -42,6 +42,7 @@ android {
         implementation(libs.viewpager2)
         implementation(libs.fragment)
         //implementation("com.google.firebase:firebase-appcheck-play-integrity:16.0.1")
+        implementation(libs.firebase.auth)
         testImplementation(libs.junit)
         androidTestImplementation(libs.ext.junit)
         androidTestImplementation(libs.espresso.core)

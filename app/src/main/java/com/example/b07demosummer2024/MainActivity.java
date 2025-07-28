@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
                 PlayIntegrityAppCheckProviderFactory.getInstance()
         );
 
-
-feature/no-ref/emergency-exit-button
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
