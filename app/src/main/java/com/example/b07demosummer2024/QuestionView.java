@@ -192,6 +192,11 @@ public class QuestionView extends Fragment {
         questionPager.setAdapter(fsa);
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        loadQuestionsFromAssets(context);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
