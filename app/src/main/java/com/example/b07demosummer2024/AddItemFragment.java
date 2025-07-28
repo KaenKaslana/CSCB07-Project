@@ -17,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AddItemFragment extends Fragment {
-    private EditText editTextTitle, editTextAuthor, editTextGenre, editTextDescription;
+    private EditText editTextTitle,  editTextDescription;
     private Spinner spinnerCategory;
     private Button buttonAdd;
 
@@ -30,8 +30,7 @@ public class AddItemFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
         editTextTitle = view.findViewById(R.id.editTextTitle);
-        editTextAuthor = view.findViewById(R.id.editTextAuthor);
-        editTextGenre = view.findViewById(R.id.editTextGenre);
+
         editTextDescription = view.findViewById(R.id.editTextDescription);
         spinnerCategory = view.findViewById(R.id.spinnerCategory);
         buttonAdd = view.findViewById(R.id.buttonAdd);
@@ -56,19 +55,18 @@ public class AddItemFragment extends Fragment {
 
     private void addItem() {
         String title = editTextTitle.getText().toString().trim();
-        String author = editTextAuthor.getText().toString().trim();
-        String genre = editTextGenre.getText().toString().trim();
+
         String description = editTextDescription.getText().toString().trim();
         String category = spinnerCategory.getSelectedItem().toString().toLowerCase();
 
-        if (title.isEmpty() || author.isEmpty() || genre.isEmpty() || description.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty()) {
             Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
             return;
         }
 
         itemsRef = db.getReference("categories/" + category);
         String id = itemsRef.push().getKey();
-        Item item = new Item(id, title, author, genre, description);
+        Item item = new Item(id, title , description);
 
         itemsRef.child(id).setValue(item).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

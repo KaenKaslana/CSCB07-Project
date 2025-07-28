@@ -11,13 +11,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.FirebaseApp;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,12 +33,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
-        DatabaseReference myRef = db.getReference("testDemo");
+        FirebaseApp.initializeApp(this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance()
+        );
 
-//        myRef.setValue("B07 Demo!");
-        myRef.child("movies").setValue("B07 Demo!");
 
+feature/no-ref/emergency-exit-button
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
@@ -44,8 +51,15 @@ public class MainActivity extends AppCompatActivity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl));
         startActivity(browserIntent);
         finishAffinity();
-    }
 
+
+    }
+    void testDB() {
+        DatabaseReference ref = db.getReference("Q&A");
+
+        ref.child("q1").setValue("the answer the q1 is 42");
+
+    }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
