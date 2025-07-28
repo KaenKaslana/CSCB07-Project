@@ -1,5 +1,6 @@
 package com.example.b07demosummer2024;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -17,6 +18,7 @@ import android.content.Intent;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,14 +40,18 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
-      QuestionView.loadQuestionsFromAssets(this);
-       OpenQuestionActivity();
-      //loadFragment(new HomeFragment());
+feature/no-ref/emergency-exit-button
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+        }
 
     }
+    public void exitAppAndRedirect(View view){
+        String websiteUrl = "https://www.google.com";
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl));
+        startActivity(browserIntent);
+        finishAffinity();
 
-    private void OpenQuestionActivity() {
-        loadFragment(new QuestionView());
 
     }
     void testDB() {
