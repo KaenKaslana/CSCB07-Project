@@ -10,12 +10,17 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.FirebaseApp;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,20 +31,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = FirebaseDatabase.getInstance("https://cscb07-group-2-default-rtdb.firebaseio.com/");
-        DatabaseReference myRef = db.getReference("testDemo");
-
+        FirebaseApp.initializeApp(this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance()
+        );
 
 
       QuestionView.loadQuestionsFromAssets(this);
-    //       OpenQuestionActivity();
-      loadFragment(new HomeFragment());
+       OpenQuestionActivity();
+      //loadFragment(new HomeFragment());
 
     }
 
     private void OpenQuestionActivity() {
-    Intent intent = new Intent(this, QuestionView.class);
-    startActivity(intent);
+        loadFragment(new QuestionView());
 
     }
     void testDB() {

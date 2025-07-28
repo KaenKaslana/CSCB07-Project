@@ -41,7 +41,7 @@ public class RecyclerViewStaticFragment extends Fragment {
         itemList = new ArrayList<>();
        ;
 
-        db = FirebaseDatabase.getInstance("https://cscb07-group-2-default-rtdb.firebaseio.com/");
+        db = FirebaseDatabase.getInstance();
         InitSub();
         LoadAll();
 

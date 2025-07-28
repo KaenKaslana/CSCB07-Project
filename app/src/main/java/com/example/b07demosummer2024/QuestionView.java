@@ -3,11 +3,14 @@ package com.example.b07demosummer2024;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -31,7 +34,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 // multi select, multi select with free form text, free form text, free form date
-public class QuestionView extends AppCompatActivity {
+public class QuestionView extends Fragment {
     String path = "WarmUp";
     public static final String WarmUpPath = "WarmUp";
     public static final String FollowUpPath = "Follow";
@@ -183,22 +186,23 @@ public class QuestionView extends AppCompatActivity {
     }
 
     protected void loadPagerAdapter(int length) {
-        fsa = new QuestionFSA(this, this, length);
+        fsa = new QuestionFSA(getActivity(), this, length);
         questionPager.setAdapter(null);
 
         questionPager.setAdapter(fsa);
     }
 
-    //QuestionPresenter presenter;
-    protected void onCreate(Bundle savedInstanceState) {
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Log.d("gupper", "created");
-        db = FirebaseDatabase.getInstance("https://cscb07-group-2-default-rtdb.firebaseio.com/");
-
-        setContentView(R.layout.question_activity);
-        questionPager = (ViewPager2) findViewById(R.id.QVP2);
-        next = findViewById(R.id.QuestionNext);
-        prev = findViewById(R.id.QuestionPrevious);
+        db = FirebaseDatabase.getInstance();
+        View view = inflater.inflate(R.layout.question_activity, container, false);
+        questionPager = (ViewPager2) view.findViewById(R.id.QVP2);
+        next = view.findViewById(R.id.QuestionNext);
+        prev = view.findViewById(R.id.QuestionPrevious);
 
         questionPager.setUserInputEnabled(false); //disable swiping
         loadPagerAdapter(warmupOptions.length);
@@ -242,6 +246,7 @@ public class QuestionView extends AppCompatActivity {
             }
         });
         LoadAnswer(0);
+        return view;
     }
 
     protected void StoreAnswer(int i, ArrayList<String> answers) {
@@ -313,7 +318,7 @@ public class QuestionView extends AppCompatActivity {
                         break;
 
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.AnswerContainer, currentAnswerFrag).commit();
+                getChildFragmentManager().beginTransaction().replace(R.id.AnswerContainer, currentAnswerFrag).commit();
 
             }
 
