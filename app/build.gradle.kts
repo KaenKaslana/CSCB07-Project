@@ -32,15 +32,21 @@ android {
     }
 }
 
-dependencies {
-    implementation(libs.appcompat)
-    implementation(libs.material)
-    implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.auth)
-    implementation(libs.gson)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-}
+    dependencies {
+
+        implementation(libs.appcompat)
+        implementation(libs.material)
+        implementation(libs.activity)
+        implementation(libs.constraintlayout)
+        implementation(libs.firebase.database)
+        implementation(libs.viewpager2)
+        implementation(libs.fragment)
+        //implementation("com.google.firebase:firebase-appcheck-play-integrity:16.0.1")
+        testImplementation(libs.junit)
+        androidTestImplementation(libs.ext.junit)
+        androidTestImplementation(libs.espresso.core)
+        implementation("com.google.code.gson:gson:2.13.1")
+        implementation("com.google.firebase:firebase-appcheck-debug:17.0.1")
+        implementation("com.google.firebase:firebase-appcheck-playintegrity:17.0.1")
+
+    }
