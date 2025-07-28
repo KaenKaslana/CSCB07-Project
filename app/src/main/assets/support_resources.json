@@ -1,0 +1,37 @@
+{
+  "Toronto": [
+    { "name": "Victim Services Toronto", "link": "https://www.victimservicestoronto.com/" },
+    { "name": "Toronto Distress Centre", "link": "https://www.dcogt.com/" },
+    { "name": "Red Door Family Shelter", "link": "https://www.reddoorshelter.ca/" },
+    { "name": "Legal Aid Ontario", "link": "https://www.legalaid.on.ca/" },
+    { "name": "Toronto Police Service", "link": "https://www.torontopolice.on.ca/" }
+  ],
+  "Vancouver": [
+    { "name": "BC VictimLink", "link": "https://www2.gov.bc.ca/gov/content/justice/criminal-justice/victims-of-crime/victimlinkbc" },
+    { "name": "Crisis Centre BC", "link": "https://crisiscentre.bc.ca/" },
+    { "name": "Lookout Housing and Health Society", "link": "https://lookoutsociety.ca/" },
+    { "name": "Legal Aid BC", "link": "https://lss.bc.ca/" },
+    { "name": "Vancouver Police Department", "link": "https://vpd.ca/" }
+  ],
+  "Montreal": [
+    { "name": "Crime Victims Assistance Centre", "link": "https://cavac.qc.ca/" },
+    { "name": "Tel-Aide Montreal", "link": "https://www.telaide.org/" },
+    { "name": "Chez Doris Women's Shelter", "link": "https://www.chezdoris.org/" },
+    { "name": "Legal Aid Quebec", "link": "https://aidejuridiquequebec.ca/" },
+    { "name": "Montreal Police Service", "link": "https://spvm.qc.ca/" }
+  ],
+  "Calgary": [
+    { "name": "Calgary Communities Against Sexual Abuse", "link": "https://calgarycasa.com/" },
+    { "name": "Distress Centre Calgary", "link": "https://www.distresscentre.com/" },
+    { "name": "Calgary Women's Emergency Shelter", "link": "https://www.calgaryshelter.com/" },
+    { "name": "Legal Aid Alberta", "link": "https://www.legalaid.ab.ca/" },
+    { "name": "Calgary Police Service", "link": "https://www.calgary.ca/cps.html" }
+  ],
+  "Ottawa": [
+    { "name": "Ottawa Victim Services", "link": "https://www.victimservicesottawa.ca/" },
+    { "name": "Ottawa Distress Centre", "link": "https://www.dcottawa.on.ca/" },
+    { "name": "Cornerstone Women's Shelter", "link": "https://www.cornerstonewomen.ca/" },
+    { "name": "Legal Aid Ontario", "link": "https://www.legalaid.on.ca/" },
+    { "name": "Ottawa Police Service", "link": "https://www.ottawapolice.ca/" }
+  ]
+}
