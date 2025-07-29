@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,7 @@ import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
@@ -93,11 +96,25 @@ public class QuestionView extends Fragment {
 
     static String[] question = null;
 
+
     public static String GetQText(int i) {
 
 
         return question[i];
     }
+    public static String getUserQuestionPath() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+            String userId = user.getUid();  // This is the user ID
+            return "Users/" + userId ;
+
+
+
+    }
+
+
+
     protected void LoadSection(int i, boolean loadFirst) {
         final int[] k = {0};
 
@@ -118,13 +135,15 @@ public class QuestionView extends Fragment {
                     LoadAnswer(k[0]);
                     break;
                 case 1:
-                    DatabaseReference dbRef = db.getReference("Q&A/WarmUp");
+                    Log.d("chu", "guh");
+
+                    DatabaseReference dbRef = db.getReference(getUserQuestionPath());
                     dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot child : snapshot.child("" + 1).child("" + 1).getChildren()) {
+                            for (DataSnapshot child : snapshot.child("Q&A").child("WarmUp").child("" + 1).child("" + 1).getChildren()) {
                                 String choice = child.getValue(String.class);
-                                Log.d("guh", choice);
                                 if (choice.equals("Post-separation")) {
                                     options = postOptions;
                                     path = "Post";
@@ -138,6 +157,8 @@ public class QuestionView extends Fragment {
                                     options = stillOptions;
                                     path = "Still";
                                     question = stillSection.questions;
+                                    Log.d("chu", "h");
+
                                 }
 
                                 break; // only need the first one
@@ -197,13 +218,50 @@ public class QuestionView extends Fragment {
         super.onAttach(context);
         loadQuestionsFromAssets(context);
     }
+    void createTree() {
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+
+        DatabaseReference sourceRef = db.getReference("Q&A");
+        DatabaseReference destinationRef = db.getReference(getUserQuestionPath());
+
+        sourceRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Object data = snapshot.getValue();
+
+                    Map<String, Object> updateMap = new HashMap<>();
+                    updateMap.put("Q&A", data);  // This puts the whole tree under destinationTree/sourceTree
+
+                    destinationRef.updateChildren(updateMap, (error, ref) -> {
+                        if (error == null) {
+                            Log.d("FIREBASE", "Tree merged successfully under destination.");
+                        } else {
+                            Log.e("FIREBASE", "Update failed: " + error.getMessage());
+                        }
+                    });
+                } else {
+                    Log.w("FIREBASE", "Source tree does not exist.");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.e("FIREBASE", "Read cancelled: " + error.getMessage());
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadQuestionsFromAssets(getContext());
+
         // Log.d("gupper", "created");
         db = FirebaseDatabase.getInstance();
+        createTree();
         View view = inflater.inflate(R.layout.question_activity, container, false);
         questionPager = (ViewPager2) view.findViewById(R.id.QVP2);
         next = view.findViewById(R.id.QuestionNext);
@@ -221,7 +279,7 @@ public class QuestionView extends Fragment {
             public void onClick(View view) {
                 int i = questionPager.getCurrentItem();
                 ArrayList<String> answers = GetAnswer();
-                if (answers == null) {
+                if (answers == null || answers.isEmpty()) {
                     return;
                 }
                 StoreAnswer(i, answers);
@@ -256,8 +314,8 @@ public class QuestionView extends Fragment {
 
     protected void StoreAnswer(int i, ArrayList<String> answers) {
 
-        DatabaseReference dbRef = db.getReference("Q&A/" + path);
-        dbRef.child("" + (i + 1)).child("" + 1).push().setValue(answers.get(0));
+        DatabaseReference dbRef = db.getReference(getUserQuestionPath());
+        dbRef.child("Q&A").child(path).child("" + (i + 1)).child("" + 1).push().setValue(answers.get(0));
         for (int j = 1; j < answers.size(); j++) {
             dbRef.child("" + (i + 1)).child("" + 2).push().setValue(answers.get(j));
         }
@@ -266,19 +324,19 @@ public class QuestionView extends Fragment {
     protected void LoadAnswer(int i) {
 
 
-        DatabaseReference dbRef = db.getReference("Q&A/" + path);
+        DatabaseReference dbRef = db.getReference(getUserQuestionPath());
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for (DataSnapshot child : snapshot.child("" + (i + 1)).child("" + 1).getChildren()) {
+                for (DataSnapshot child : snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 1).getChildren()) {
                     child.getRef().removeValue();
                 }
-                for (DataSnapshot child : snapshot.child("" + (i + 1)).child("" + 2).getChildren()) {
+                for (DataSnapshot child : snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 2).getChildren()) {
                     child.getRef().removeValue();
                 }
 
-                int answerType = snapshot.child("" + (i + 1)).child("" + 0).getValue(Integer.class);
+                int answerType = snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 0).getValue(Integer.class);
                 // Log.d("guh", "" + (answerType));
                 // Log.d("guh", "" + (i+1));
                 switch (answerType) {
