@@ -65,7 +65,7 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     }
     void GetFirstPath() {
-        DatabaseReference dbRef = db.getReference("Q&A/WarmUp");
+        DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"Q&A/WarmUp");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -140,7 +140,7 @@ public class RecyclerViewStaticFragment extends Fragment {
         return null;
     }
     private void LoadTips(String sub, ArrayList<Hashtable<String,String>> arr) {
-        DatabaseReference dbRef = db.getReference("Q&A/" + sub);
+        DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"Q&A/" + sub);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             int i =1;
 
