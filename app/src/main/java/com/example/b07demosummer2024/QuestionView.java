@@ -328,61 +328,53 @@ public class QuestionView extends Fragment {
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for (DataSnapshot child : snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 1).getChildren()) {
+                for (DataSnapshot child : snapshot.child("Q&A").child(path).child(String.valueOf(i + 1)).child("1").getChildren()) {
                     child.getRef().removeValue();
                 }
-                for (DataSnapshot child : snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 2).getChildren()) {
+                for (DataSnapshot child : snapshot.child("Q&A").child(path).child(String.valueOf(i + 1)).child("2").getChildren()) {
                     child.getRef().removeValue();
                 }
 
-                int answerType = snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 0).getValue(Integer.class);
-                // Log.d("guh", "" + (answerType));
-                // Log.d("guh", "" + (i+1));
+                DataSnapshot typeSnap = snapshot.child("Q&A").child(path).child(String.valueOf(i + 1)).child("0");
+                Long answerTypeLong = typeSnap.getValue(Long.class);
+                if (answerTypeLong == null) {
+                    Log.w("QuestionView", "answerType is null at " + typeSnap.getRef());
+                    return;
+                }
+                int answerType = answerTypeLong.intValue();
+
                 switch (answerType) {
                     case 0:
                         currentAnswerFrag = QMulti.CreateText(options[i], false);
                         break;
-
                     case 1:
                         currentAnswerFrag = QMulti.CreateText(options[i], true);
                         break;
                     case 2:
-
                         currentAnswerFrag = QFreeText.CreateText();
                         break;
                     case 3:
                         currentAnswerFrag = QSpinnerFragment.CreateSpinner(options[i]);
-
                         break;
-
                     case 4:
                         currentAnswerFrag = QDate.CreateText();
                         break;
-
                     case 5:
                         String text = null;
-                        if (path.equals("WarmUp")) {
+                        if (WarmUpPath.equals(path)) {
                             text = subText[0];
-                        }
-                        if (path.equals("Planning")) {
+                        } else if (PlanningPath.equals(path)) {
                             text = subText[1];
-                        }
-                        if (path.equals("Post")) {
-                            if (i + 1 == 2) {
-                                text = subText[2];
-
-                            } else {
-                                text = subText[3];
-
-                            }
+                        } else if (PostPath.equals(path)) {
+                            text = (i + 1 == 2) ? subText[2] : subText[3];
                         }
                         currentAnswerFrag = QMultiToText.CreateText(options[i], text);
                         break;
-
+                    default:
+                        Log.e("QuestionView", "Unknown answerType: " + answerType);
+                        return;
                 }
                 getChildFragmentManager().beginTransaction().replace(R.id.AnswerContainer, currentAnswerFrag).commit();
-
             }
 
             @Override
