@@ -51,7 +51,7 @@ public class QuestionView extends Fragment {
     static String[][] warmupOptions = {
             {"Still in a relationship", "Planning to leave", "Post-separation"},
 
-            {"Toronto", "Vancouver", "Ottawa", "Edmonton"},
+            {"Toronto", "Vancouver", "Ottawa", "Calgary", "Montreal"},
             {},
             {"Family", "Roommates", "Alone", "Partner"},
             {"Yes", "No"}
