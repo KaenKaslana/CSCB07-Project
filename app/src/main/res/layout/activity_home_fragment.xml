@@ -15,13 +15,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonScroller"/>
+        app:layout_constraintBottom_toTopOf="@+id/buttonCategory"/>
 
     <Button
-        android:id="@+id/buttonScroller"
+        android:id="@+id/buttonCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/scroller"
+        android:text="Emergency Info Storage"
         app:layout_constraintTop_toBottomOf="@+id/buttonQuestionnaire"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +32,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/spinner"
-        app:layout_constraintTop_toBottomOf="@+id/buttonScroller"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCategory"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/buttonManageItems"/>

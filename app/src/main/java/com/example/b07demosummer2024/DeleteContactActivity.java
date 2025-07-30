@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ public class DeleteContactActivity extends AppCompatActivity implements ContactA
     private DatabaseReference contactsRef;
     private Button confirmDeleteButton;
     private ContactInfo selectedContact; // The contact selected by the user
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,14 @@ public class DeleteContactActivity extends AppCompatActivity implements ContactA
         adapter = new ContactAdapter(this, contactList, this);
         recyclerView.setAdapter(adapter);
 
-        contactsRef = FirebaseDatabase.getInstance().getReference("users/user1/emergencyContacts");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        contactsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("emergencyContacts");
 
         loadContacts();
 

@@ -42,12 +42,6 @@ public class MainActivity extends AppCompatActivity {
                 PlayIntegrityAppCheckProviderFactory.getInstance()
         );
 
-//        Button for 'Information Storage' on main page.
-        Button infoStorageButton = findViewById(R.id.infoStorageButton);
-        infoStorageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
-            startActivity(intent);
-        });
 
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());

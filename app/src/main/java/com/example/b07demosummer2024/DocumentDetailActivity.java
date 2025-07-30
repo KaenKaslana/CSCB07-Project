@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -19,17 +21,19 @@ public class DocumentDetailActivity extends AppCompatActivity {
     private TextView documentNameText;
     private Button openButton, deleteButton;
     private String docId, docName, docUrl;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_document_detail);
 
+        mAuth = FirebaseAuth.getInstance();
+
         documentNameText = findViewById(R.id.documentNameText);
         openButton = findViewById(R.id.openDocumentButton);
         deleteButton = findViewById(R.id.deleteDocumentButton);
 
-        // Get document details from Intent
         Intent intent = getIntent();
         docId = intent.getStringExtra("docId");
         docName = intent.getStringExtra("docName");
@@ -41,13 +45,10 @@ public class DocumentDetailActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> deleteDocument());
     }
 
-    /**
-     * Open the document using native Android apps or browser.
-     */
     private void openDocument() {
         try {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(docUrl), "*/*"); // Allow any file type
+            intent.setDataAndType(Uri.parse(docUrl), "*/*");
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(intent, "Open Document"));
         } catch (Exception e) {
@@ -55,22 +56,21 @@ public class DocumentDetailActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Delete the document from Firebase Storage and remove metadata.
-     */
     private void deleteDocument() {
-        if (docUrl == null || docId == null) {
-            Toast.makeText(this, "Invalid document data.", Toast.LENGTH_SHORT).show();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null || docUrl == null || docId == null) {
+            Toast.makeText(this, "Invalid document or user not signed in.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Delete from Firebase Storage
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(docUrl);
         storageRef.delete()
                 .addOnSuccessListener(aVoid -> {
-                    // Remove metadata from Realtime Database
+                    String uid = user.getUid();
                     DatabaseReference databaseRef = FirebaseDatabase.getInstance()
-                            .getReference("users/user1/documentsMeta")
+                            .getReference("Users")
+                            .child(uid)
+                            .child("documentsMeta")
                             .child(docId);
                     databaseRef.removeValue()
                             .addOnSuccessListener(aVoid1 -> {
@@ -78,11 +78,11 @@ public class DocumentDetailActivity extends AppCompatActivity {
                                 finish();
                             })
                             .addOnFailureListener(e ->
-                                    Toast.makeText(this, "Failed to delete metadata: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                    Toast.makeText(this, "Failed to delete metadata: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                            );
                 })
                 .addOnFailureListener(e ->
-                        Toast.makeText(this, "Failed to delete document: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                        Toast.makeText(this, "Failed to delete document: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 }
-
-

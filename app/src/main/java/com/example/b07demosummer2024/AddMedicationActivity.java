@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -16,6 +18,7 @@ public class AddMedicationActivity extends AppCompatActivity {
     private EditText nameInput, dosageInput;
     private Button addButton;
     private DatabaseReference medicationsRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,14 @@ public class AddMedicationActivity extends AppCompatActivity {
         dosageInput = findViewById(R.id.inputMedicationDosage);
         addButton = findViewById(R.id.addMedicationConfirmButton);
 
-        medicationsRef = FirebaseDatabase.getInstance().getReference("users/user1/medications");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        medicationsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("medications");
 
         addButton.setOnClickListener(v -> addMedication());
     }

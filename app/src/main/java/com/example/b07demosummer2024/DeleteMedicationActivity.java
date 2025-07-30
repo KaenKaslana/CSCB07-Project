@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +28,7 @@ public class DeleteMedicationActivity extends AppCompatActivity implements Medic
     private DatabaseReference medicationsRef;
     private Button confirmDeleteButton;
     private MedicationInfo selectedMedication;  // Selected medication for deletion
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,14 @@ public class DeleteMedicationActivity extends AppCompatActivity implements Medic
         adapter = new MedicationAdapter(this, medicationList, this);
         recyclerView.setAdapter(adapter);
 
-        medicationsRef = FirebaseDatabase.getInstance().getReference("users/user1/medications");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        medicationsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("medications");
 
         loadMedications();
 

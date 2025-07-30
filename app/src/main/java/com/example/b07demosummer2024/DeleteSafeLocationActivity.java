@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +28,7 @@ public class DeleteSafeLocationActivity extends AppCompatActivity implements Saf
     private DatabaseReference locationsRef;
     private Button confirmDeleteButton;
     private SafeLocationInfo selectedLocation; // Selected location
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,14 @@ public class DeleteSafeLocationActivity extends AppCompatActivity implements Saf
         adapter = new SafeLocationAdapter(this, locationList, this);
         recyclerView.setAdapter(adapter);
 
-        locationsRef = FirebaseDatabase.getInstance().getReference("users/user1/safeLocations");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        locationsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("safeLocations");
 
         loadLocations();
 

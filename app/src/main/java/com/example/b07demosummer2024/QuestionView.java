@@ -104,13 +104,8 @@ public class QuestionView extends Fragment {
     }
     public static String getUserQuestionPath() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
             String userId = user.getUid();  // This is the user ID
             return "Users/" + userId ;
-
-
-
     }
 
 

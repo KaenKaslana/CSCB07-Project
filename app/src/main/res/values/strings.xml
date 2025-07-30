@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">B07 Demo Summer 2024</string>
-
-    <!-- For DocumentsActivity -->
     <string name="upload_edit_delete">Upload, Edit, or Delete documents here</string>
     <string name="upload_to_firebase">Upload change to Firebase</string>
-
-    <!-- For ActionActivity -->
     <string name="choose_action">Please choose your next move:</string>
     <string name="add">Add</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
-
-    <!-- For CategoryActivity -->
     <string name="indicate_categories">Please indicate your data categories</string>
     <string name="documents">Documents to pack</string>
     <string name="contacts">Emergency contacts</string>
@@ -39,19 +33,13 @@
     <string name="select_file_to_upload">Select File to Upload</string>
     <string name="upload_file_to_firebase">Upload File to Firebase</string>
     <string name="no_file_selected_yet">No file selected yet.</string>
-    <string name="select_file_to_upload_1">Select File to Upload</string>
-    <string name="upload_file_to_firebase_1">Upload File to Firebase</string>
-    <string name="no_file_selected_yet_1">No file selected yet.</string>
     <string name="upload_file">Upload File</string>
     <string name="document_name">Document Name</string>
     <string name="open_document">Open Document</string>
     <string name="delete_document">Delete Document</string>
     <string name="sample_document">Sample Document</string>
-</resources>
-    <string-array name="categories_array">
-        <item>Books</item>
-        <item>Movies</item>
-    </string-array>
+
+
     <string-array name="warmup_array">
         <item>Which best describes your situation?</item>
         <item>What city do you live in?</item>
@@ -65,22 +53,22 @@
         <item>Are you recording the incidents (dates, times, details)?</item>
         <item>Name one person you can call immediately in an emergency.</item>
     </string-array>
+
     <string-array name="plan_leave_array">
         <item>When do you plan to leave?</item>
         <item>Do you have a go-bag packed with essentials?</item>
         <item>Where do you keep emergency cash or cards?</item>
         <item>Have you identified a safe place to stay?</item>
-
     </string-array>
+
     <string-array name="post_array">
         <item>Has the abuser continued any contact?</item>
         <item>Do you have a protection order? If yes, which type?</item>
         <item>Are you using any safety tools (cameras, door alarms)?</item>
         <item>Have you identified a safe place to stay?</item>
-
     </string-array>
+
     <string-array name="follow_up_array">
         <item>Which type of support would help most right now?</item>
-
     </string-array>
-
+</resources>

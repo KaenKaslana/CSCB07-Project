@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -16,6 +18,7 @@ public class AddSafeLocationActivity extends AppCompatActivity {
     private EditText addressInput, notesInput;
     private Button addButton;
     private DatabaseReference locationsRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +29,15 @@ public class AddSafeLocationActivity extends AppCompatActivity {
         notesInput = findViewById(R.id.addLocationNotes);
         addButton = findViewById(R.id.addLocationConfirmButton);
 
-        locationsRef = FirebaseDatabase.getInstance().getReference("users/user1/safeLocations");
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        locationsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("safeLocations");
 
         addButton.setOnClickListener(v -> addSafeLocation());
     }

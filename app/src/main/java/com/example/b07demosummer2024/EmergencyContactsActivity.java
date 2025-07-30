@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import java.util.List;
 
 public class EmergencyContactsActivity extends AppCompatActivity implements ContactAdapter.OnItemClickListener {
 
+    private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
     private ContactAdapter adapter;
     private List<ContactInfo> contactList;
@@ -31,31 +34,33 @@ public class EmergencyContactsActivity extends AppCompatActivity implements Cont
         super.onCreate(savedInstanceState);
         setContentView(R.layout.emergency_contacts_activity);
 
-        // Firebase reference: contacts under "users/user1/emergencyContacts"
-        contactsRef = FirebaseDatabase.getInstance().getReference("users/user1/emergencyContacts");
+        // Initialize FirebaseAuth and ensure user is signed in
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Build dynamic path: "Users/{uid}/emergencyContacts"
+        String uid = user.getUid();
+        contactsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("emergencyContacts");
 
         recyclerView = findViewById(R.id.emergencyContactsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         contactList = new ArrayList<>();
-        adapter = new ContactAdapter(this, contactList,this);
+        adapter = new ContactAdapter(this, contactList, this);
         recyclerView.setAdapter(adapter);
 
-        Button addButton = findViewById(R.id.addContactButton);
-        Button editButton = findViewById(R.id.editContactButton);
+        Button addButton    = findViewById(R.id.addContactButton);
+        Button editButton   = findViewById(R.id.editContactButton);
         Button deleteButton = findViewById(R.id.deleteContactButton);
 
-        addButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, AddContactActivity.class));
-        });
-
-        editButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, EditContactActivity.class));
-        });
-
-        deleteButton.setOnClickListener(v -> {
-            startActivity(new Intent(this, DeleteContactActivity.class));
-        });
+        addButton   .setOnClickListener(v -> startActivity(new Intent(this, AddContactActivity.class)));
+        editButton  .setOnClickListener(v -> startActivity(new Intent(this, EditContactActivity.class)));
+        deleteButton.setOnClickListener(v -> startActivity(new Intent(this, DeleteContactActivity.class)));
 
         loadContactsFromFirebase();
     }
@@ -68,6 +73,7 @@ public class EmergencyContactsActivity extends AppCompatActivity implements Cont
                 for (DataSnapshot contactSnapshot : snapshot.getChildren()) {
                     ContactInfo contact = contactSnapshot.getValue(ContactInfo.class);
                     if (contact != null) {
+                        contact.setId(contactSnapshot.getKey());
                         contactList.add(contact);
                     }
                 }
@@ -86,8 +92,6 @@ public class EmergencyContactsActivity extends AppCompatActivity implements Cont
     @Override
     public void onItemClick(int position) {
         ContactInfo selectedContact = contactList.get(position);
-        // Example: Show a toast or navigate to details
         Toast.makeText(this, "Clicked: " + selectedContact.getName(), Toast.LENGTH_SHORT).show();
     }
 }
-

@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -16,6 +18,7 @@ public class AddContactActivity extends AppCompatActivity {
     private EditText nameInput, relationshipInput, phoneInput, addressInput;
     private Button addContactButton;
     private DatabaseReference contactsRef;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +31,14 @@ public class AddContactActivity extends AppCompatActivity {
         addressInput = findViewById(R.id.addressInput);
         addContactButton = findViewById(R.id.addContactButton);
 
-        // Reference to Firebase path: users/user1/emergencyContacts
-        contactsRef = FirebaseDatabase.getInstance().getReference("users/user1/emergencyContacts");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        contactsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("emergencyContacts");
 
         addContactButton.setOnClickListener(v -> addContactToFirebase());
     }

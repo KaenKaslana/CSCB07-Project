@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +39,7 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
 
     private DocumentInfo selectedDocument = null;
     private int selectedPosition = RecyclerView.NO_POSITION;
-
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +56,14 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
         adapter = new DocumentAdapter(this, documentList, this);
         recyclerView.setAdapter(adapter);
 
-        // Firebase Realtime Database reference
-        documentsRef = FirebaseDatabase.getInstance().getReference("users/user1/documents");
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(this, "Please login", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        String uid = currentUser.getUid();
+        documentsRef = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("documents");
 
         // Load existing documents
         loadDocumentsFromFirebase();
