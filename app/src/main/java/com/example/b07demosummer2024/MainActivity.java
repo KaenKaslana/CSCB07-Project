@@ -17,11 +17,13 @@ import android.view.View;
 import android.content.Intent;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.FirebaseApp;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
 
         FirebaseApp.initializeApp(this);
@@ -38,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
         firebaseAppCheck.installAppCheckProviderFactory(
                 PlayIntegrityAppCheckProviderFactory.getInstance()
         );
+
+//        Button for 'Information Storage' on main page.
+        Button infoStorageButton = findViewById(R.id.infoStorageButton);
+        infoStorageButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+            startActivity(intent);
+        });
 
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
@@ -73,4 +83,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+
 }

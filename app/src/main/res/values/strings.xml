@@ -1,15 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">B07 Demo Summer 2024</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="delete_item">Delete Item</string>
-    <string name="add_item">Add Item</string>
-    <string name="back">Back</string>
-    <string name="recyclerview">RecyclerView</string>
-    <string name="scroller">Scroller</string>
-    <string name="spinner">Spinner</string>
-    <string name="manage_items">Manage Items</string>
 
+    <!-- For DocumentsActivity -->
+    <string name="upload_edit_delete">Upload, Edit, or Delete documents here</string>
+    <string name="upload_to_firebase">Upload change to Firebase</string>
+
+    <!-- For ActionActivity -->
+    <string name="choose_action">Please choose your next move:</string>
+    <string name="add">Add</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!-- For CategoryActivity -->
+    <string name="indicate_categories">Please indicate your data categories</string>
+    <string name="documents">Documents to pack</string>
+    <string name="contacts">Emergency contacts</string>
+    <string name="locations">Safe locations</string>
+    <string name="medications">Medications</string>
+    <string name="please_choose_your_next_move">Please choose your next move:</string>
+    <string name="add_file">Add File</string>
+    <string name="edit_file">Edit File</string>
+    <string name="delete_file">Delete File</string>
+    <string name="please_indicate_your_data_categories">Please indicate your data categories</string>
+    <string name="documents_to_pack">Documents to pack</string>
+    <string name="emergency_contacts">Emergency contacts</string>
+    <string name="safe_locations">Safe locations</string>
+    <string name="medications_">Medications</string>
+    <string name="upload_edit_or_delete_documents_here">Upload, Edit, or Delete documents here</string>
+    <string name="upload_change_to_firebase">Upload change to Firebase</string>
+    <string name="scroller">scroller</string>
+    <string name="spinner">spinner</string>
+    <string name="manage_items">manage_items</string>
+    <string name="recyclerview">recyclerview</string>
+    <string name="add_item">add_item</string>
+    <string name="delete_item">delete_item</string>
+    <string name="back">back</string>
+    <string name="select_file_to_upload">Select File to Upload</string>
+    <string name="upload_file_to_firebase">Upload File to Firebase</string>
+    <string name="no_file_selected_yet">No file selected yet.</string>
+    <string name="select_file_to_upload_1">Select File to Upload</string>
+    <string name="upload_file_to_firebase_1">Upload File to Firebase</string>
+    <string name="no_file_selected_yet_1">No file selected yet.</string>
+    <string name="upload_file">Upload File</string>
+    <string name="document_name">Document Name</string>
+    <string name="open_document">Open Document</string>
+    <string name="delete_document">Delete Document</string>
+    <string name="sample_document">Sample Document</string>
+</resources>
     <string-array name="categories_array">
         <item>Books</item>
         <item>Movies</item>
@@ -46,4 +84,3 @@
 
     </string-array>
 
-</resources>
