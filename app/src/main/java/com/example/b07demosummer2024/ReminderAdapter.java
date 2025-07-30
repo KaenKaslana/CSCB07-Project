@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.WorkManager;
 
 import com.google.firebase.database.DatabaseReference;
 
@@ -74,6 +75,7 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
             int adapterPosition = holder.getAdapterPosition();
             if (adapterPosition != RecyclerView.NO_POSITION) {
                 String key = reminderKeys.get(adapterPosition);
+                WorkManager.getInstance(v.getContext()).cancelAllWorkByTag(key);
                 remindersRef.child(key).removeValue().addOnSuccessListener(aVoid -> {
                             Toast.makeText(v.getContext(), "Reminder deleted", Toast.LENGTH_SHORT).show();
                         })

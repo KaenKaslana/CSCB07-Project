@@ -96,6 +96,7 @@ public class CreateSchedule extends AppCompatActivity {
         String reminderKey = getIntent().getStringExtra("REMINDER_KEY");
         if (isEditMode && existingReminder != null) {
             // EDIT MODE: Hide radio buttons, show only relevant fields
+            WorkManager.getInstance(this).cancelAllWorkByTag(reminderKey);//deleting the workRequest so that the old reminder is deleted
             button.setVisibility(View.GONE);
             frequency = existingReminder.getFrequency();
             time.setVisibility(View.VISIBLE);
@@ -190,7 +191,8 @@ public class CreateSchedule extends AppCompatActivity {
                             24,//repeat every 24 hours
                             TimeUnit.HOURS
                     ).setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)//initial delay before you start repeating every 24 hours
-                    .build();
+                            .addTag(key)//for keeping track of what to delete
+                            .build();
                     WorkManager.getInstance(CreateSchedule.this).enqueue(dailyRequest);
                     finish();
 
@@ -225,6 +227,7 @@ public class CreateSchedule extends AppCompatActivity {
                             7,
                             TimeUnit.DAYS
                     ).setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                            .addTag(key)
                             .build();
                     WorkManager.getInstance(CreateSchedule.this).enqueue(weeklyRequest);
                     finish();
@@ -267,6 +270,7 @@ public class CreateSchedule extends AppCompatActivity {
                             ReminderWorkerMonthly.class)
                             .setInputData(inputData)
                             .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+                            .addTag(key)
                             .build();
                     WorkManager.getInstance(CreateSchedule.this).enqueue(monthlyRequest);
                     finish();
