@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -48,9 +49,28 @@
             android:name=".EditMedicationActivity" />
         <activity
             android:name=".DeleteMedicationActivity" />
-
         <activity
-            android:name=".ActionActivity"
+            android:name=".ActionActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+      
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SupportConnectionFragment"
+            android:exported="false" />
+        <activity
+            android:name=".QuestionView"
+            android:exported="false" />
+        <activity
+            android:name=".ItemAdapter"
             android:exported="false" />
         <activity
             android:name=".CategoryActivity"
@@ -72,13 +92,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
     <uses-permission

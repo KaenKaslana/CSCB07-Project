@@ -48,4 +48,39 @@
     <string name="delete_document">Delete Document</string>
     <string name="sample_document">Sample Document</string>
 </resources>
+    <string-array name="categories_array">
+        <item>Books</item>
+        <item>Movies</item>
+    </string-array>
+    <string-array name="warmup_array">
+        <item>Which best describes your situation?</item>
+        <item>What city do you live in?</item>
+        <item>Which room in your home feels the safest if you need to get away quickly?</item>
+        <item>Who do you live with?</item>
+        <item>Do you have children?</item>
+    </string-array>
+
+    <string-array name="still_in_array">
+        <item>Which form(s) of abuse are you experiencing?</item>
+        <item>Are you recording the incidents (dates, times, details)?</item>
+        <item>Name one person you can call immediately in an emergency.</item>
+    </string-array>
+    <string-array name="plan_leave_array">
+        <item>When do you plan to leave?</item>
+        <item>Do you have a go-bag packed with essentials?</item>
+        <item>Where do you keep emergency cash or cards?</item>
+        <item>Have you identified a safe place to stay?</item>
+
+    </string-array>
+    <string-array name="post_array">
+        <item>Has the abuser continued any contact?</item>
+        <item>Do you have a protection order? If yes, which type?</item>
+        <item>Are you using any safety tools (cameras, door alarms)?</item>
+        <item>Have you identified a safe place to stay?</item>
+
+    </string-array>
+    <string-array name="follow_up_array">
+        <item>Which type of support would help most right now?</item>
+
+    </string-array>
 
