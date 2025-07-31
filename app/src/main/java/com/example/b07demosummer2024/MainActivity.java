@@ -19,16 +19,27 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.work.WorkManager;
-
 import android.util.Log;
 import android.widget.Button;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import android.widget.Button;
+import android.view.View;
+import android.content.Intent;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.FirebaseApp;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,29 +49,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
-
-        // checking version for notification requirements, permissions etc
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // Show Android's permission request popup
-                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
-            }
-        }
-
-        reminderButton = findViewById(R.id.Reminder);
-        reminderButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, Reminders.class));
-            }
-        });
-
-        //db = FirebaseDatabase.getInstance("https://b07-demo-summer-2024-default-rtdb.firebaseio.com/");
-        //DatabaseReference myRef = db.getReference("testDemo");
-
-//        myRef.setValue("B07 Demo!");
-        //myRef.child("movies").setValue("B07 Demo!");
+      
+        FirebaseApp.initializeApp(this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance()
+        );
 
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
@@ -91,8 +87,14 @@ public class MainActivity extends AppCompatActivity {
         Button reminderButton = findViewById(R.id.Reminder);
         reminderButton.setVisibility(View.GONE); // Hide when leaving
         super.onPause();
-    }
 
+    }
+    void testDB() {
+        DatabaseReference ref = db.getReference("Q&A");
+
+        ref.child("q1").setValue("the answer the q1 is 42");
+
+    }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
@@ -108,4 +110,6 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
+
 }

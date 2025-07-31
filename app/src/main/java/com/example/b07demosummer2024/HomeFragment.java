@@ -13,39 +13,33 @@ import androidx.fragment.app.FragmentTransaction;
 public class HomeFragment extends Fragment {
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
-        Button buttonRecyclerView = view.findViewById(R.id.buttonRecyclerView);
-        Button buttonScroller = view.findViewById(R.id.buttonScroller);
+        Button buttonQuestionnaire = view.findViewById(R.id.buttonQuestionnaire);
+        Button buttonCategory = view.findViewById(R.id.buttonCategory);
         Button buttonSpinner = view.findViewById(R.id.buttonSpinner);
         Button buttonManageItems = view.findViewById(R.id.buttonManageItems);
+        Button buttonSupportConnection = view.findViewById(R.id.buttonSupportConnection);
 
-        buttonRecyclerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new RecyclerViewFragment());
-            }
-        });
+        buttonQuestionnaire.setOnClickListener(v ->
+                loadFragment(new QuestionView())
+        );
 
-        buttonScroller.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new ScrollerFragment());
-            }
-        });
-
-        buttonSpinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new SpinnerFragment());
-            }
-        });
-
-        buttonManageItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { loadFragment(new ManageItemsFragment());}
-        });
+        buttonCategory.setOnClickListener(v ->
+                loadFragment(new CategoryFragment())
+        );
+        buttonSpinner.setOnClickListener(v ->
+                loadFragment(new SpinnerFragment())
+        );
+        buttonManageItems.setOnClickListener(v ->
+                loadFragment(new ManageItemsFragment())
+        );
+        buttonSupportConnection.setOnClickListener(v ->
+                loadFragment(new SupportConnectionFragment())
+        );
 
         return view;
     }

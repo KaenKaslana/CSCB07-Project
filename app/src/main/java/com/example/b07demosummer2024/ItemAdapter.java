@@ -26,8 +26,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = itemList.get(position);
         holder.textViewTitle.setText(item.getTitle());
-        holder.textViewAuthor.setText(item.getAuthor());
-        holder.textViewGenre.setText(item.getGenre());
         holder.textViewDescription.setText(item.getDescription());
     }
 
@@ -37,13 +35,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle, textViewAuthor, textViewGenre, textViewDescription;
+        TextView textViewTitle,  textViewDescription;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
-            textViewAuthor = itemView.findViewById(R.id.textViewAuthor);
-            textViewGenre = itemView.findViewById(R.id.textViewGenre);
+
             textViewDescription = itemView.findViewById(R.id.textViewDescription);
         }
     }
