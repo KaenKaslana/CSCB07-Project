@@ -75,26 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Button reminderButton = findViewById(R.id.Reminder);
-        reminderButton.setVisibility(View.VISIBLE); // Show when returning
-    }
 
-    @Override
-    protected void onPause() {
-        Button reminderButton = findViewById(R.id.Reminder);
-        reminderButton.setVisibility(View.GONE); // Hide when leaving
-        super.onPause();
-
-    }
-    void testDB() {
-        DatabaseReference ref = db.getReference("Q&A");
-
-        ref.child("q1").setValue("the answer the q1 is 42");
-
-    }
     private void loadFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);

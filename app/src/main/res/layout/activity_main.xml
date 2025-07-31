@@ -29,12 +29,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.483" >
 
-        <Button
-            android:id="@+id/Reminder"
-            android:layout_width="432dp"
-            android:layout_height="61dp"
-            android:layout_gravity="left|bottom"
-            android:text="Reminders" />
     </FrameLayout>
 
     <TextView

@@ -25,24 +25,14 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonQuestionnaire"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSpinner"/>
+        app:layout_constraintBottom_toTopOf="@+id/buttonReminder"/>
 
     <Button
-        android:id="@+id/buttonSpinner"
+        android:id="@+id/buttonReminder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/spinner"
+        android:text="Reminder"
         app:layout_constraintTop_toBottomOf="@+id/buttonCategory"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonManageItems"/>
-
-    <Button
-        android:id="@+id/buttonManageItems"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/manage_items"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/buttonSupportConnection"/>
@@ -52,7 +42,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Support Resource"
-        app:layout_constraintTop_toBottomOf="@+id/buttonManageItems"
+        app:layout_constraintTop_toBottomOf="@+id/buttonReminder"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

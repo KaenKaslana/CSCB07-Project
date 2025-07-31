@@ -20,8 +20,7 @@ public class HomeFragment extends Fragment {
 
         Button buttonQuestionnaire = view.findViewById(R.id.buttonQuestionnaire);
         Button buttonCategory = view.findViewById(R.id.buttonCategory);
-        Button buttonSpinner = view.findViewById(R.id.buttonSpinner);
-        Button buttonManageItems = view.findViewById(R.id.buttonManageItems);
+        Button buttonReminder = view.findViewById(R.id.buttonReminder);
         Button buttonSupportConnection = view.findViewById(R.id.buttonSupportConnection);
 
         buttonQuestionnaire.setOnClickListener(v ->
@@ -31,11 +30,8 @@ public class HomeFragment extends Fragment {
         buttonCategory.setOnClickListener(v ->
                 loadFragment(new CategoryFragment())
         );
-        buttonSpinner.setOnClickListener(v ->
-                loadFragment(new SpinnerFragment())
-        );
-        buttonManageItems.setOnClickListener(v ->
-                loadFragment(new ManageItemsFragment())
+        buttonReminder.setOnClickListener(v ->
+                loadFragment(new RemindersFragment())
         );
         buttonSupportConnection.setOnClickListener(v ->
                 loadFragment(new SupportConnectionFragment())

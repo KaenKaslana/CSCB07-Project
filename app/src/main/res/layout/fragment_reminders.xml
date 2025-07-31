@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RemindersFragment">
+
+    <TextView
+        android:id="@+id/Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose an option"
+        android:fontFamily="sans-serif"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="24dp"/>
+
+    <RadioGroup
+        android:id="@+id/options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/Choice"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="24dp">
+
+        <RadioButton
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+
+        <RadioButton
+            android:id="@+id/editdelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit/Delete" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
