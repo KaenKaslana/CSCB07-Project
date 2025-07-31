@@ -52,5 +52,6 @@ android {
         implementation("com.google.code.gson:gson:2.13.1")
         implementation("com.google.firebase:firebase-appcheck-debug:17.0.1")
         implementation("com.google.firebase:firebase-appcheck-playintegrity:17.0.1")
-
-    }
+        implementation("androidx.work:work-runtime:2.8.0")
+        implementation("androidx.core:core-ktx:1.12.0")
+}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -60,6 +61,21 @@
             </intent-filter>
         </activity>
       
+        <activity
+            android:name=".ChangeReminderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateSchedule"
+            android:exported="false" />
+        <activity
+            android:name=".Reminders"
+            android:exported="false" />
+        <activity
+            android:name=".Scheduling"
+            android:exported="false" />
+        <activity
+            android:name=".ItemAdapater"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
