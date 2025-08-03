@@ -15,18 +15,31 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ *
+ *Bryce Chen
+ *
+ * Question type for free form text
+ *
+ *
+ */
 public class QFreeText extends QAnswerFrag{
 
     EditText editText;
+    // initialization
+
     public static QFreeText CreateText( ){
         QFreeText spinToWin = new QFreeText();
         return spinToWin;
 
     }
+    // initialization
 
+    //No crazy implemenation, just a text box
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.free_form_text, container, false);
         editText = view.findViewById(R.id.AnswerText);
 
@@ -36,6 +49,8 @@ public class QFreeText extends QAnswerFrag{
         super.onDestroyView();
     }
 
+
+    // Ensure the given list of answers have no empty answers
     @Override
     public ArrayList<String> NotifyListener() {
         ArrayList<String> list = new ArrayList<String>();

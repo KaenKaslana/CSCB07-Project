@@ -36,7 +36,14 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-// multi select, multi select with free form text, free form text, free form date
+/**
+ *
+ *Bryce Chen
+ *
+ *Class that manages the entire question quiz
+ *
+ *
+ */
 public class QuestionView extends Fragment {
     String path = "WarmUp";
     public static final String WarmUpPath = "WarmUp";
@@ -45,7 +52,13 @@ public class QuestionView extends Fragment {
     public static final String PostPath = "Post";
 
     public static final String PlanningPath = "Planning";
+    IQuizDone listener;
+    //let a higher class tune in when the quiz is done
+    public void Listen(IQuizDone listener){
+        this.listener = listener;
 
+
+    }
 
     String[] subText = {"enter a code word", "enter a temporary shelter", "enter a legal order", "enter equipment"};
     static String[][] warmupOptions = {
@@ -96,12 +109,13 @@ public class QuestionView extends Fragment {
 
     static String[] question = null;
 
-
+    //return the question for the specific index
     public static String GetQText(int i) {
 
 
         return question[i];
     }
+    //get from firebase the path to the question tree based on userid, needed to access and store question answers
     public static String getUserQuestionPath() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -114,16 +128,22 @@ public class QuestionView extends Fragment {
     }
 
 
-
+    //We have three question sections, loads the last and first section and loads the middle based on the firsst question
     protected void LoadSection(int i, boolean loadFirst) {
+    //load first indicates whether we are loading from left to right or right to left (am i going to a previous section?)
         final int[] k = {0};
 
 
-        if (i > 2 || i == -1) {
+        if (i > 2 || i == -1) { // call quiz over if last section done
+            if(i>2) {
+
+                listener.QuizDone();
+            }
 
         } else {
             switch (i) {
                 case 0:
+                    //if we are loading the first section, load the warmup path
                     options = warmupOptions;
                     path = "WarmUp";
                     question = warmupSection.questions;
@@ -135,6 +155,8 @@ public class QuestionView extends Fragment {
                     LoadAnswer(k[0]);
                     break;
                 case 1:
+                    //if we are loading the second section, check the first answer and load the corresponding section
+
                     Log.d("chu", "guh");
 
                     DatabaseReference dbRef = db.getReference(getUserQuestionPath());
@@ -180,6 +202,7 @@ public class QuestionView extends Fragment {
 
                     break;
                 case 2:
+                    // load the last section
                     options = followUpOptions;
                     path = "Follow";
                     question = followSection.questions;
@@ -206,18 +229,20 @@ public class QuestionView extends Fragment {
 
     }
 
+    //Simple initialization for fragment state adapter
     protected void loadPagerAdapter(int length) {
         fsa = new QuestionFSA(getActivity(), this, length);
         questionPager.setAdapter(null);
 
         questionPager.setAdapter(fsa);
     }
-
+    //On attatchment to parrent activity, initialize question list from the JSON definition based in the assets folder
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         loadQuestionsFromAssets(context);
     }
+    //Create the tree for a user that doesn't have a tree for storing answers :(
     void createTree() {
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -232,31 +257,33 @@ public class QuestionView extends Fragment {
                     Object data = snapshot.getValue();
 
                     Map<String, Object> updateMap = new HashMap<>();
-                    updateMap.put("Q&A", data);  // This puts the whole tree under destinationTree/sourceTree
+                    updateMap.put("Q&A", data);  // This puts q/a tree into the destination
 
                     destinationRef.updateChildren(updateMap, (error, ref) -> {
                         if (error == null) {
-                            Log.d("FIREBASE", "Tree merged successfully under destination.");
                         } else {
-                            Log.e("FIREBASE", "Update failed: " + error.getMessage());
+                            Log.d("Gupper", "chuppy no");
                         }
                     });
                 } else {
-                    Log.w("FIREBASE", "Source tree does not exist.");
+                    Log.w("Gupper", "silly goose");
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                Log.e("FIREBASE", "Read cancelled: " + error.getMessage());
+                Log.e("Gyooer", "cancelled");
             }
         });
     }
+
+    //Initialization
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         loadQuestionsFromAssets(getContext());
 
         // Log.d("gupper", "created");
@@ -267,13 +294,12 @@ public class QuestionView extends Fragment {
         next = view.findViewById(R.id.QuestionNext);
         prev = view.findViewById(R.id.QuestionPrevious);
 
-        questionPager.setUserInputEnabled(false); //disable swiping
+        questionPager.setUserInputEnabled(false); //disable swiping for the fragment state adapter, for the next previous buttons
         loadPagerAdapter(warmupOptions.length);
         question = getResources().getStringArray(R.array.warmup_array);
 
 
-        //presenter = new QuestionPresenter(this, new QuestionModel(presenter));
-
+        //Initialize next and previus buttons. Basically on next we set variables to the next question, unless its the last question, then we load the next section
         next.setOnClickListener(new Button.OnClickListener() {
 
             public void onClick(View view) {
@@ -312,6 +338,7 @@ public class QuestionView extends Fragment {
         return view;
     }
 
+    //Store answers based on current path
     protected void StoreAnswer(int i, ArrayList<String> answers) {
 
         DatabaseReference dbRef = db.getReference(getUserQuestionPath());
@@ -320,9 +347,8 @@ public class QuestionView extends Fragment {
             dbRef.child("" + (i + 1)).child("" + 2).push().setValue(answers.get(j));
         }
     }
-
+//Loas the corresponding answer based on the question index
     protected void LoadAnswer(int i) {
-
 
         DatabaseReference dbRef = db.getReference(getUserQuestionPath());
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -339,6 +365,8 @@ public class QuestionView extends Fragment {
                 int answerType = snapshot.child("Q&A").child(path).child("" + (i + 1)).child("" + 0).getValue(Integer.class);
                 // Log.d("guh", "" + (answerType));
                 // Log.d("guh", "" + (i+1));
+                //Grab the question type from the firebase datatype and create the corresponding fragment
+                // this is a terrible practice but im too far deep in
                 switch (answerType) {
                     case 0:
                         currentAnswerFrag = QMulti.CreateText(options[i], false);
@@ -401,7 +429,7 @@ public class QuestionView extends Fragment {
 
         return answer;
     }
-
+    // parse the json file and load the questions into my arrays, stored in a class called section
     public static void loadQuestionsFromAssets(Context context) {
         try {
             InputStream stream = context.getAssets().open("questions.json");
@@ -428,7 +456,7 @@ public class QuestionView extends Fragment {
         }
 
     }
-
+    //store into a section class based on the given json root
     static Section LoadSection(String sect, JSONObject root) throws Exception {
         JSONArray warmupArray = root.getJSONArray(sect);
         Section res = new Section(warmupArray.length());
@@ -445,7 +473,6 @@ public class QuestionView extends Fragment {
                 String key = keys.next();
                 String tip = tips.getString(key);
                 res.tips.get(i).put(key, tip);
-                //Log.d("ParsedTip", "Question: " + question + " | Key: " + key + " | Tip: " + tip);
             }
         }
         return res;
