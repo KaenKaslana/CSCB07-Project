@@ -34,7 +34,7 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
@@ -45,14 +45,17 @@ public class MainActivity extends AppCompatActivity {
 
     //FirebaseDatabase db;
     Button reminderButton;
+    Button logoutButton;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_main);
-      
-        FirebaseApp.initializeApp(this);
+
+        auth = FirebaseAuth.getInstance();
+
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory(
                 PlayIntegrityAppCheckProviderFactory.getInstance()
@@ -61,6 +64,15 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             loadFragment(new HomeFragment());
         }
+
+        logoutButton = findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(v -> {
+            auth.signOut();
+            Intent intent = new Intent(MainActivity.this, PinUnlockActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
 
         //building the channel(required for a certain versions and up of android) so that the notifications work, must have a channel before making the notif
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -93,4 +105,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-}
+}   

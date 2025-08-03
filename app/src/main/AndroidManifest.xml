@@ -55,12 +55,8 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-      
+
         <activity
             android:name=".ChangeReminderActivity"
             android:exported="false" />
@@ -106,9 +102,52 @@
         <activity
             android:name=".HomeFragment"
             android:exported="false" />
+
+        <!-- PIN Unlock Activity as launcher -->
+        <activity
+            android:name=".PinUnlockActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Firebase Login Activity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+
+        <!-- Register Activity -->
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+
+        <!-- PIN Setup Activity -->
+        <activity
+            android:name=".PinSetupActivity"
+            android:exported="false" />
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ChangeReminderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateSchedule"
+            android:exported="false" />
+        <activity
+            android:name=".Reminders"
+            android:exported="false" />
+        <activity
+            android:name=".Scheduling"
+            android:exported="false" />
+        <activity
+            android:name=".ItemAdapater"
+            android:exported="false" />
     </application>
 
     <uses-permission

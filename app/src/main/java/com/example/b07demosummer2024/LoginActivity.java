@@ -18,6 +18,8 @@ public class LoginActivity extends AppCompatActivity {
     // FirebaseAuth instance
     private FirebaseAuth auth;
 
+    private SharedPreferencesHelper sharedPreferencesHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize FirebaseAuth
         auth = FirebaseAuth.getInstance();
+
+        sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
@@ -68,8 +72,19 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Login successful
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
+                        if (!sharedPreferencesHelper.isPinSet()) {
+                            // Prompt to create PIN if not set
+                            Intent intent = new Intent(LoginActivity.this, PinSetupActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // PIN is set, proceed to MainActivity
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
                     } else {
                         // Login failed
                         new MaterialAlertDialogBuilder(LoginActivity.this)
