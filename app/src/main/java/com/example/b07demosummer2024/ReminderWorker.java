@@ -27,7 +27,7 @@ public class ReminderWorker extends Worker {
     public Result doWork() {
         //this is for the daily and weekly, doWork() just build and send the notif
         //when opening the notif, take you to mainactivity
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
