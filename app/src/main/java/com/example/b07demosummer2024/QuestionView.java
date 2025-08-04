@@ -433,7 +433,6 @@ public class QuestionView extends Fragment {
     public static void loadQuestionsFromAssets(Context context) {
         try {
             InputStream stream = context.getAssets().open("questions.json");
-            InputStreamReader reader = new InputStreamReader(stream);
             int size = stream.available();
             byte[] buffer = new byte[size];
 
@@ -449,7 +448,6 @@ public class QuestionView extends Fragment {
             followSection = LoadSection("follow_up_array", root);
 
 
-            reader.close();
             stream.close();
         } catch (Exception e) {
             e.printStackTrace();
