@@ -23,13 +23,22 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ *
+ *Bryce Chen
+ *
+ *Fragment for displaying tips
+ *
+ *
+ */
+
 public class RecyclerViewStaticFragment extends Fragment {
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
     private List<Item> itemList;
     String mid;
     FirebaseDatabase db;
-
+    //initialization nearly identical to the orignal recycler view
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,12 +56,16 @@ public class RecyclerViewStaticFragment extends Fragment {
 
         return view;
     }
+
+    //Create the recycler view basically
     void CreateList() {
+
         itemAdapter = new ItemAdapter(itemList);
         recyclerView.setAdapter(itemAdapter);
 
     }
 
+    //Load the first and last section, and the middle section based on the section
 
     void LoadAll() {
         LoadTips("WarmUp", QuestionView.warmupSection.tips);
@@ -64,7 +77,9 @@ public class RecyclerViewStaticFragment extends Fragment {
 
 
     }
+
     void GetFirstPath() {
+        //get teh answer from the first question, and then get the corresponding section's answers
         DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"Q&A/WarmUp");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -79,7 +94,6 @@ public class RecyclerViewStaticFragment extends Fragment {
                     arr = QuestionView.stillSection.tips;
                 } else if (choice.equals("Planning to leave")) {mid = "Planning";arr = QuestionView.planSection.tips;}
                 else{ mid = "Post"; arr = QuestionView.postSection.tips;}
-//Log.d("supper", arr.get(0).get(""));
                 LoadTips(mid, arr);
             }
 
@@ -91,6 +105,7 @@ public class RecyclerViewStaticFragment extends Fragment {
     }
     Hashtable<String, Integer> subSet;
     //0 is use as answer, 1 is subanswer, 2 is sequence in commas, 3 is follow up sepcial (0 as ttemp),4 is live with
+    // this initilization for tips with special formats, see above
     private void InitSub() {
         subSet = new Hashtable<String, Integer>();
         subSet.put(QuestionView.WarmUpPath + 1, 0);
@@ -110,6 +125,7 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     }
     String safe;
+    //handlign replacing teh "answer" bracket based on the tip display type
     private String HandleSubAnswer(String tip, int index, String sub, String answer, Iterable<DataSnapshot> iter) {
         String res= null;
         String ans = "{answer}";
@@ -139,6 +155,8 @@ public class RecyclerViewStaticFragment extends Fragment {
 
         return null;
     }
+
+    //Get answers from database and then create the list
     private void LoadTips(String sub, ArrayList<Hashtable<String,String>> arr) {
         DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"Q&A/" + sub);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {

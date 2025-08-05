@@ -14,17 +14,26 @@ import androidx.annotation.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+/**
+ *
+ *Bryce Chen
+ *
+ * Question type for spinner selection
+ *
+ *
+ */
 
 public class QSpinnerFragment extends QAnswerFrag {
    protected String [] myOptions;
     Spinner spinner;
+    //initialization
    public static QSpinnerFragment CreateSpinner(String[] myOptions){
        QSpinnerFragment spinToWin = new QSpinnerFragment();
        spinToWin.myOptions = myOptions;
        return spinToWin;
 
    }
-
+    //initialization, nearly identical to the starter code
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,7 +45,7 @@ public class QSpinnerFragment extends QAnswerFrag {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
+        //change the spinner so that when an option is selected, we tell the listener
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

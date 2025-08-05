@@ -18,6 +18,14 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+/**
+ *
+ *Bryce Chen
+ *
+ * Question type for multiple choice for selecting one or many answers
+ *
+ *
+ */
 
 public class QMulti extends QAnswerFrag{
 
@@ -29,6 +37,8 @@ public class QMulti extends QAnswerFrag{
 IListenClick listen;
     boolean multi;
     protected RadioButton currentSelected = null;
+    // initialization
+
     public static QMulti CreateText( String[] options, boolean multi){
         QMulti spinToWin = new QMulti();
         spinToWin.multi= multi;
@@ -37,48 +47,63 @@ IListenClick listen;
 
     }
     public static QMulti CreateText( String[] options, boolean multi, IListenClick click){
-        QMulti spinToWin = CreateText(options, multi);
+        QMulti spinToWin = new QMulti();
+        spinToWin.multi= multi;
+        spinToWin.options = options;
         spinToWin.listen = click;
+
         return spinToWin;
 
     }
+
+    // initialization
+
     @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.multi_select_fragment, container, false);
+
+
         questionGroup = view.findViewById(R.id.AnswerGroup);
+        // we create a hashset to store answers
         selected = new HashSet<>();
 
-
+        //for each answer option
         for(int i = 0; i < options.length; i ++) {
+            //Create a Radio Button for each selection
             RadioButton option = new RadioButton(getContext());
             option.setText(options[i]);
             option.setId(i);
-
+            //when hovering over the button
             option.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
+                    //while hovering, if mouse up (we clicked the button)
                     if(motionEvent.getAction()==MotionEvent.ACTION_UP) {
-                    if(multi) {
-                        if (option.isChecked()) {
+                    if(multi) { // what to do based on multiple choice is many answers or is one
+                        if (option.isChecked()) { // if this answer is selected, unselect it and remove from answer list
                             selected.remove(option.getText().toString());
                             //Log.d("g",""+option.getId());
                             option.setChecked(false);
                         } else {
+                            //otherwise select the button and add the answer
                             selected.add(option.getText().toString());
                             option.setChecked(true);
 
                         }
                     } else {
-                        // fire event
+                        //if we only select one answer, then whenever an answer is selected we
+                        //clear all answers
                         selected.clear();
+                        //notify any listeners of when we selected something (needed for another class)
                         if(listen!=null) {listen.Click(option.getText().toString());}
+                        //if we have selected an answer, remove that answer
                             if(currentSelected != null) {
                                 currentSelected.setChecked(false);
                                // selected.remove(option.getText().toString());
 
-                            }else {
+                            }else { //otherwise if no answers were selected, the one we selectd is the new selected answer
                                 currentSelected = option;
                             }
                         selected.add(option.getText().toString());

@@ -28,7 +28,6 @@ public class RecyclerViewFragment extends Fragment {
 
     private FirebaseDatabase db;
     private DatabaseReference itemsRef;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
