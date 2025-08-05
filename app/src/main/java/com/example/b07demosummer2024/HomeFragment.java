@@ -19,23 +19,19 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
         Button buttonQuestionnaire = view.findViewById(R.id.buttonQuestionnaire);
-        Button buttonScroller = view.findViewById(R.id.buttonScroller);
-        Button buttonSpinner = view.findViewById(R.id.buttonSpinner);
-        Button buttonManageItems = view.findViewById(R.id.buttonManageItems);
+        Button buttonCategory = view.findViewById(R.id.buttonCategory);
+        Button buttonReminder = view.findViewById(R.id.buttonReminder);
         Button buttonSupportConnection = view.findViewById(R.id.buttonSupportConnection);
 
         buttonQuestionnaire.setOnClickListener(v ->
                 loadFragment(new QuestionView())
         );
 
-        buttonScroller.setOnClickListener(v ->
-                loadFragment(new ScrollerFragment())
+        buttonCategory.setOnClickListener(v ->
+                loadFragment(new CategoryFragment())
         );
-        buttonSpinner.setOnClickListener(v ->
-                loadFragment(new SpinnerFragment())
-        );
-        buttonManageItems.setOnClickListener(v ->
-                loadFragment(new ManageItemsFragment())
+        buttonReminder.setOnClickListener(v ->
+                loadFragment(new RemindersFragment())
         );
         buttonSupportConnection.setOnClickListener(v ->
                 loadFragment(new SupportConnectionFragment())

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,21 +14,69 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.B07DemoSummer2024"
         tools:targetApi="31">
+
+        <!-- Information Storage -->
+        <activity
+            android:name=".EmergencyContactsActivity" />
+        <activity
+            android:name=".EditContactActivity" />
+        <activity
+            android:name=".DeleteContactActivity" />
+        <activity
+            android:name=".AddContactActivity" />
+
+        <!-- Documents to Pack -->
+        <activity
+            android:name=".DocumentActivity" />
+        <activity
+            android:name=".DocumentDetailActivity" />
+
+        <!-- Safe Locations -->
+        <activity
+            android:name=".SafeLocationsActivity" />
+        <activity
+            android:name=".AddSafeLocationActivity" />
+        <activity
+            android:name=".EditSafeLocationActivity" />
+        <activity
+            android:name=".DeleteSafeLocationActivity" />
+
+        <!-- Medications -->
+        <activity
+            android:name=".MedicationActivity" />
+        <activity
+            android:name=".AddMedicationActivity" />
+        <activity
+            android:name=".EditMedicationActivity" />
+        <activity
+            android:name=".DeleteMedicationActivity" />
+        <activity
+            android:name=".ActionActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ChangeReminderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateSchedule"
+            android:exported="false" />
+        <activity
+            android:name=".Reminders"
+            android:exported="false" />
+        <activity
+            android:name=".Scheduling"
+            android:exported="false" />
+        <activity
+            android:name=".ItemAdapater"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".SupportConnectionActivity"
+            android:name=".SupportConnectionFragment"
             android:exported="false" />
         <activity
             android:name=".QuestionView"
@@ -36,10 +85,13 @@
             android:name=".ItemAdapter"
             android:exported="false" />
         <activity
-            android:name=".Item"
+            android:name=".CategoryActivity"
             android:exported="false" />
         <activity
-            android:name=".Item2"
+            android:name=".InfoStorageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Item"
             android:exported="false" />
         <activity
             android:name=".SpinnerFragment"
@@ -50,12 +102,57 @@
         <activity
             android:name=".HomeFragment"
             android:exported="false" />
+
+        <!-- PIN Unlock Activity as launcher -->
         <activity
-            android:name=".Activity2"
+            android:name=".PinUnlockActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Firebase Login Activity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
+
+        <!-- Register Activity -->
+        <activity
+            android:name=".RegisterActivity"
             android:exported="false" />
+
+        <!-- PIN Setup Activity -->
+        <activity
+            android:name=".PinSetupActivity"
+            android:exported="false" />
+
+        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ChangeReminderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CreateSchedule"
+            android:exported="false" />
+        <activity
+            android:name=".Reminders"
+            android:exported="false" />
+        <activity
+            android:name=".Scheduling"
+            android:exported="false" />
+        <activity
+            android:name=".ItemAdapater"
+            android:exported="false" />
     </application>
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

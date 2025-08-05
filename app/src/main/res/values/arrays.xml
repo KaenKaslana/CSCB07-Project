@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories_array">
+        <item>Documents</item>
+        <item>Contacts</item>
+        <item>Safe Locations</item>
+        <item>Medications</item>
+    </string-array>
+</resources>

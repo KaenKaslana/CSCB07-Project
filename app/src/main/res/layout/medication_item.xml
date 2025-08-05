@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/contact_normal_border">
+
+    <TextView
+        android:id="@+id/medicationName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name: Example"
+        android:textStyle="bold"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/medicationDosage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dosage: Example"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

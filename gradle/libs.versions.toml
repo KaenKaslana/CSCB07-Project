@@ -1,5 +1,9 @@
 [versions]
 agp = "8.4.1"
+androidPdfViewer = "2.8.2"
+androidPdfViewerVersion = "3.2.0-beta.1"
+firebaseBom = "34.0.0"
+firebaseStorage = "22.0.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
@@ -9,12 +13,18 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
+materialVersion = "1.12.0"
 firebaseAuth = "22.1.0"
 gson = "2.10.1"
 viewpager2 = "1.1.0"
 fragment = "1.8.8"
 
 [libraries]
+android-pdf-viewer = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewer" }
+android-pdf-viewer-v320beta1 = { module = "com.github.barteksc:android-pdf-viewer", version.ref = "androidPdfViewerVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-storage = { module = "com.google.firebase:firebase-storage", version.ref = "firebaseStorage" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -23,7 +33,8 @@ material = { group = "com.google.android.material", name = "material", version.r
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" } 
+material-v1120 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
 fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
