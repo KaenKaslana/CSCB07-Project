@@ -35,7 +35,7 @@
 
     <Button
         android:id="@+id/goToLoginButton"
-        android:text="Back to Login"
+        android:text="Go to Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>

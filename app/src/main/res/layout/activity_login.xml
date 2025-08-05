@@ -7,6 +7,15 @@
     android:gravity="center"
     android:padding="24dp">
 
+    <TextView
+        android:id="@+id/errorMessage"
+        android:text="Welcome"
+        android:textColor="@android:color/holo_red_dark"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:gravity="center"/>
 
     <EditText
         android:id="@+id/emailInput"
@@ -35,8 +44,11 @@
 
     <Button
         android:id="@+id/goToRegisterButton"
-        android:text="Register"
+        android:text="Go to Register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
+
+
+
 </LinearLayout>
