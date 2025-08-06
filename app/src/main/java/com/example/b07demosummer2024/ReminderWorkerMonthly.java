@@ -17,24 +17,36 @@ import androidx.work.WorkerParameters;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * Worker class for handling daily and weekly reminder notifications.
+ * Extends {@link Worker} to perform background work when triggered by WorkManager.
+ * This class builds and displays notifications when the scheduled reminder time arrives.
+ */
 public class ReminderWorkerMonthly extends Worker {
+    /**
+     * Creates a new instance of ReminderWorker.
+     * @param context The application context
+     * @param params Worker parameters
+     */
     public ReminderWorkerMonthly(
             @NonNull Context context,
             @NonNull WorkerParameters params) {
         super(context, params);
     }
-
+    /**
+     * Called by WorkManager when it's time to perform the scheduled work.
+     * Builds and displays a notification, then returns a success result.
+     * @return The result of the work (success)
+     */
     @Override
     public Result doWork() {
-        //this ones for monthly reminders, since theres not fixed repetitive time to use for a periodic request, so we make a new onetimerequest each time
-        //collect all the info on the date and time to schedule the next reminder
+        //since monthly dates do not repeat on by constant interval, keep making oneTimeRequests and check whether date exist in month
         Data inputData = getInputData();
         int dayOfMonth = inputData.getInt("DAY_OF_MONTH", 1);
         int hour = inputData.getInt("HOUR", 12);
         int minute = inputData.getInt("MINUTE", 0);
 
-        //setting up so that when notif is clicked you get taken to main activity
+        // Create intent that will open LoginActivity when notification is tapped
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);

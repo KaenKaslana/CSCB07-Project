@@ -14,25 +14,39 @@ import androidx.work.WorkManager;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
-
+/**
+ * Adapter for displaying reminders in a RecyclerView.
+ * Handles rendering reminder items and processing edit/delete actions.
+ */
 public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder> {
     private List<Reminder> reminderList;
     private List<String> reminderKeys;
     private DatabaseReference remindersRef;
 
-    // Constructor - pass in the data
+    /**
+     * Constructs a new ReminderAdapter.
+     * @param reminderList List of Reminder objects to display
+     * @param reminderKeys List of Firebase keys corresponding to the reminders
+     * @param remindersRef Firebase DatabaseReference to the reminders node
+     */
     public ReminderAdapter(List<Reminder> reminderList, List<String> reminderKeys, DatabaseReference remindersRef ) {
         this.reminderList = reminderList;
         this.reminderKeys = reminderKeys;
         this.remindersRef = remindersRef;
     }
-
+    /**
+     * ViewHolder class that holds references to all UI components for a reminder item.
+     */
     public static class ReminderViewHolder extends RecyclerView.ViewHolder {
         // Declare all of the user interface elements (the type of reminder, time, day or date, edit button, delete button)
         TextView frequencyText, timeText, dayOrDate;
         ImageButton deleteButton;
         ImageButton editButton;
 
+        /**
+         * Initializes the ViewHolder and binds UI elements.
+         * @param itemView The root view of the item layout
+         */
         public ReminderViewHolder(@NonNull View itemView) {
             super(itemView);
             // Connecting the data to the item xml views
@@ -47,14 +61,21 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
 
     @NonNull
     @Override
+    /**
+     * Creates new ViewHolder instances when needed.
+     */
     public ReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_reminder, parent, false);
         return new ReminderViewHolder(view);
-    }//creates new row
+    }
 
     @Override
-    //populates
+    /**
+     * Binds data to a ViewHolder at the specified position.
+     * @param holder The ViewHolder to bind data to
+     * @param position The position of the item in the data set
+     */
     public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
         Reminder reminder = reminderList.get(position);
 
@@ -91,10 +112,10 @@ public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.Remind
                 String key = reminderKeys.get(adapterPosition);
                 Reminder reminderCurr = reminderList.get(adapterPosition);
 
-                Intent intent = new Intent(v.getContext(), CreateSchedule.class);//if edit button clicked, take us to CreateSchedule under edit mode
+                Intent intent = new Intent(v.getContext(), CreateSchedule.class);// opens CreateSchedule under edit mode
                 intent.putExtra("EDIT_MODE", true);
                 intent.putExtra("REMINDER_KEY", key);
-                intent.putExtra("REMINDER_DATA", reminderCurr); // Pass the ENTIRE object, had to implement serializable in reminder class
+                intent.putExtra("REMINDER_DATA", reminderCurr); // Pass the ENTIRE object
 
                 v.getContext().startActivity(intent);
             }

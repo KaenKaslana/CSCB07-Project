@@ -1,4 +1,4 @@
-package com.example.b07demosummer2024;
+package com.example.b07demosummer2024 ;
 
 
 import android.Manifest;
@@ -15,18 +15,30 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-
+/**
+ * Worker class for handling daily and weekly reminder notifications.
+ * Extends {@link Worker} to perform background work when triggered by WorkManager.
+ * This class builds and displays notifications when the scheduled reminder time arrives.
+ */
 public class ReminderWorker extends Worker {
+    /**
+     * Creates a new instance of ReminderWorker.
+     * @param context The application context
+     * @param params Worker parameters
+     */
     public ReminderWorker(
             @NonNull Context context,
             @NonNull WorkerParameters params) {
         super(context, params);
     }
-
+    /**
+     * Called by WorkManager when it's time to perform the scheduled work.
+     * Builds and displays a notification, then returns a success result.
+     * @return The result of the work (success)
+     */
     @Override
     public Result doWork() {
-        //this is for the daily and weekly, doWork() just build and send the notif
-        //when opening the notif, take you to mainactivity
+        // Create intent that will open LoginActivity when notification is tapped
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
@@ -37,7 +49,7 @@ public class ReminderWorker extends Worker {
                 .setContentTitle("Review Reminders")
                 .setContentText("Its time to review your plan.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent);//takes te mainactivity
+                .setContentIntent(pendingIntent);//takes to login
 
         NotificationManagerCompat manager = NotificationManagerCompat.from(getApplicationContext());
 
@@ -48,7 +60,7 @@ public class ReminderWorker extends Worker {
         ) {
             return Result.success();
         }
-        manager.notify((int) System.currentTimeMillis(), builder.build());//send the notifciation
+        manager.notify((int) System.currentTimeMillis(), builder.build());//send the notification
 
         return Result.success();
 

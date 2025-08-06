@@ -33,6 +33,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+/**
+ * Activity for creating or editing reminders with different frequencies (daily, weekly, monthly).
+ * Handles UI setup, Firebase storage, and WorkManager notification scheduling.
+ */
 
 public class CreateSchedule extends AppCompatActivity {
 
@@ -71,8 +75,10 @@ public class CreateSchedule extends AppCompatActivity {
         day.setVisibility(View.GONE);
         date.setVisibility(View.GONE);
         save.setVisibility(View.GONE);
-        //set them all invisible because what is visible depends on mode your in
+        //all invisible, visibility depends on mode you are in
 
+
+        /** Sets up spinner with days of week (Mon-Sun) */
         Spinner spinnerDay = (Spinner) day;
 
         ArrayAdapter<CharSequence> adapterDay = ArrayAdapter.createFromResource(
@@ -83,8 +89,8 @@ public class CreateSchedule extends AppCompatActivity {
 
         adapterDay.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDay.setAdapter(adapterDay);
-        //spinner with days of week(Mon-Sun)
 
+        /** Sets up spinner with dates (1-31) */
         Spinner spinnerDate = (Spinner) date;
 
         ArrayAdapter<CharSequence> adapterDate = ArrayAdapter.createFromResource(
@@ -95,14 +101,14 @@ public class CreateSchedule extends AppCompatActivity {
 
         adapterDate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDate.setAdapter(adapterDate);
-        //spinner with dates (1-31)
 
-        //if editing mode (you should be just prompted to change time, day/date (depending on whether your changing a daily, weekly, monthly reminder)
+        /** Configures UI for either edit mode (existing reminder) or create mode (new reminder) */
         boolean isEditMode = getIntent().getBooleanExtra("EDIT_MODE", false);
         Reminder existingReminder = (Reminder) getIntent().getSerializableExtra("REMINDER_DATA");
         String reminderKey = getIntent().getStringExtra("REMINDER_KEY");
+
         if (isEditMode && existingReminder != null) {
-            // EDIT MODE: Hide radio buttons, show only relevant fields
+            // EDIT MODE: Hide frequency buttons, show only relevant fields
             WorkManager.getInstance(this).cancelAllWorkByTag(reminderKey);//deleting the workRequest so that the old reminder is deleted
             button.setVisibility(View.GONE);
             frequency = existingReminder.getFrequency();
@@ -181,7 +187,7 @@ public class CreateSchedule extends AppCompatActivity {
                         }
                     });
 
-                    //notification code, first find the current hour and minute, then use initial delay to find first notif time, then repeat every 24 hours from that time
+                    //notification logic
                     Calendar now = Calendar.getInstance();
                     Calendar targetTime = (Calendar) now.clone();
                     targetTime.set(Calendar.HOUR_OF_DAY, hour);
@@ -191,7 +197,7 @@ public class CreateSchedule extends AppCompatActivity {
                     if (targetTime.before(now)) {
                         targetTime.add(Calendar.DAY_OF_YEAR, 1);
                     }
-                    long initialDelay = targetTime.getTimeInMillis() - now.getTimeInMillis();
+                    long initialDelay = targetTime.getTimeInMillis() - now.getTimeInMillis();//find initial delay to upcoming time
 
                     PeriodicWorkRequest dailyRequest = new PeriodicWorkRequest.Builder(
                             ReminderWorker.class,
@@ -215,7 +221,7 @@ public class CreateSchedule extends AppCompatActivity {
                         }
                     });
 
-                    //notification code, this time find current day, set the time and find delay, then repeat every 7 days
+                    //notification logic
                     int selectedPosition = day.getSelectedItemPosition();
                     int calendarDay = selectedPosition + 2;
                     Calendar now = Calendar.getInstance();
@@ -231,7 +237,7 @@ public class CreateSchedule extends AppCompatActivity {
 
                     PeriodicWorkRequest weeklyRequest = new PeriodicWorkRequest.Builder(
                             ReminderWorker.class,
-                            7,
+                            7,//repeat every 7 days
                             TimeUnit.DAYS
                     ).setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
                             .addTag(key)
@@ -252,7 +258,7 @@ public class CreateSchedule extends AppCompatActivity {
 
 
 
-                    //notification code, this ones different, make a one time request, and each time you build a new notif, make another one time request based on whether month carries the date
+                    //notification logic, since monthly dates dont have constant repeating interval, oneTimeWorkRequest
                     Calendar now = Calendar.getInstance();
                     Calendar targetDate= (Calendar) now.clone();
                     targetDate.set(Calendar.HOUR_OF_DAY, hour);
@@ -292,6 +298,11 @@ public class CreateSchedule extends AppCompatActivity {
             return insets;
         });
     }
+    /**
+     * Validates time input format (HH:MM).
+     * @param time EditText containing time input
+     * @return int array with hour and minute, or null if invalid
+     */
 
     private int[] validateTimeInput(EditText time) {
         String input = time.getText().toString().trim();

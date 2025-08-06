@@ -22,7 +22,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Activity for viewing and managing existing reminders in a RecyclerView.
+ * Allows users to see all their scheduled reminders and provides edit/delete functionality
+ * through the {@link ReminderAdapter}.
+ */
 public class ChangeReminderActivity extends AppCompatActivity {
     private RecyclerView remindersRecyclerView;
     private ReminderAdapter adapter;
@@ -66,7 +70,10 @@ public class ChangeReminderActivity extends AppCompatActivity {
         loadReminders();
 
     }
-
+    /**
+     * Loads reminders from Firebase and updates the RecyclerView.
+     * Uses a ValueEventListener to automatically refresh when data changes.
+     */
     private void loadReminders() {
         remindersRef.addValueEventListener(new ValueEventListener() {
             @Override
