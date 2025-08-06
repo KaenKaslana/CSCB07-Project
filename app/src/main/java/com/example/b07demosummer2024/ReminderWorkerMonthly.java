@@ -35,7 +35,7 @@ public class ReminderWorkerMonthly extends Worker {
         int minute = inputData.getInt("MINUTE", 0);
 
         //setting up so that when notif is clicked you get taken to main activity
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
