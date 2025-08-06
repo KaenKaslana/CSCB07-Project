@@ -107,10 +107,6 @@
         <activity
             android:name=".PinUnlockActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Firebase Login Activity -->
@@ -118,20 +114,22 @@
             android:name=".LoginActivity"
             android:exported="true" />
 
-        <!-- Register Activity -->
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
 
-        <!-- PIN Setup Activity -->
         <activity
             android:name=".PinSetupActivity"
             android:exported="false" />
 
-        <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ChangeReminderActivity"

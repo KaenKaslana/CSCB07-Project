@@ -4,34 +4,28 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
-
     private EditText emailInput, passwordInput;
-    private Button loginButton, goToRegisterButton;
+    private Button  loginButton, goToRegisterButton;
     private TextView errorMessageTextView;
-
-    private LoginPresenter presenter;
     private FloatingActionButton exitButton;
+    private LoginPresenter    presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // find views
         emailInput = findViewById(R.id.emailInput);
         passwordInput = findViewById(R.id.passwordInput);
         loginButton = findViewById(R.id.loginButton);
@@ -39,28 +33,34 @@ public class LoginActivity extends AppCompatActivity {
         errorMessageTextView = findViewById(R.id.errorMessage);
         exitButton = findViewById(R.id.exitButton);
 
+        // Emergency‐Exit FAB
         exitButton.setOnClickListener(v -> {
-            Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
-            startActivity(browser);
-            finishAffinity();
+            startActivity(new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.google.com")
+            ));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                finishAndRemoveTask();
+            } else {
+                finishAffinity();
+            }
         });
-
 
         presenter = new LoginPresenter(this);
 
         loginButton.setOnClickListener(v -> {
-            String email = emailInput.getText().toString().trim();
+            String email    = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
-            presenter.validateAndLogin(email, password); // Calling the Presenter
+            presenter.validateAndLogin(email, password);
         });
 
         goToRegisterButton.setOnClickListener(v ->
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class))
+                startActivity(new Intent(this, RegisterActivity.class))
         );
     }
 
-    public void showError(String message) {
-        errorMessageTextView.setText(message);
+    public void showError(String msg) {
+        errorMessageTextView.setText(msg);
     }
 
     public void hideError() {
@@ -68,15 +68,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginSuccess() {
-        // Navigate to MainActivity or any other logic on successful login
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        Intent i = new Intent(this, MainActivity.class);
+        i.putExtra("skipPin", true);                        // skip PIN
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
         finish();
     }
 
     public void onLoginFailure(String message) {
-        new MaterialAlertDialogBuilder(LoginActivity.this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Login Failed")
                 .setMessage(message)
                 .setPositiveButton("OK", null)

@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,55 +20,75 @@ import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderF
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-
     private FirebaseAuth auth;
+    private ActivityResultLauncher<Intent> pinLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Firebase + AppCheck
         FirebaseApp.initializeApp(this);
+        auth = FirebaseAuth.getInstance();
+        FirebaseAppCheck.getInstance()
+                .installAppCheckProviderFactory(
+                        PlayIntegrityAppCheckProviderFactory.getInstance()
+                );
+
         setContentView(R.layout.activity_main);
 
-        auth = FirebaseAuth.getInstance();
-
-        // App Check
-        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
-        firebaseAppCheck.installAppCheckProviderFactory(
-                PlayIntegrityAppCheckProviderFactory.getInstance()
-        );
-
-        // Load initial fragment
-        if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
-        }
-
-        // Notification channel for reminders
+        // Notification channel (8.0+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel =
-                    new NotificationChannel("reminder_channel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager =
-                    getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+            NotificationChannel chan = new NotificationChannel(
+                    "reminder_channel",
+                    getString(R.string.channel_name),
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            chan.setDescription(getString(R.string.channel_description));
+            ((NotificationManager)getSystemService(NotificationManager.class))
+                    .createNotificationChannel(chan);
         }
 
-        // Emergency-Exit button
+        // Emergency-Exit FAB
         FloatingActionButton exitButton = findViewById(R.id.exitButton);
         exitButton.setOnClickListener(v -> {
-            Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
-            startActivity(browser);
-            finishAffinity();
+            startActivity(new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.google.com")
+            ));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                finishAndRemoveTask();
+            } else {
+                finishAffinity();
+            }
         });
+
+        // Prepare PIN-unlock launcher
+        pinLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        loadFragment(new HomeFragment());
+                    } else {
+                        finishAffinity();
+                    }
+                }
+        );
+
+        // Decide whether to skip PIN
+        boolean skipPin = getIntent().getBooleanExtra("skipPin", false);
+        if (savedInstanceState == null) {
+            if (skipPin) {
+                loadFragment(new HomeFragment());
+            } else {
+                pinLauncher.launch(new Intent(this, PinUnlockActivity.class));
+            }
+        }
     }
 
-    private void loadFragment(Fragment fragment) {
+    private void loadFragment(Fragment frag) {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-        tx.replace(R.id.fragment_container, fragment);
-        tx.addToBackStack(null);
+        tx.replace(R.id.fragment_container, frag);
         tx.commit();
     }
 
