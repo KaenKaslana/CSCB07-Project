@@ -48,7 +48,9 @@ public class RecyclerViewStaticFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         itemList = new ArrayList<>();
-       ;
+        itemAdapter = new ItemAdapter(itemList);
+        recyclerView.setAdapter(itemAdapter);
+       Log.d("recycle", "hello");
 
         db = FirebaseDatabase.getInstance();
         InitSub();
@@ -180,7 +182,7 @@ public class RecyclerViewStaticFragment extends Fragment {
                     tip =  HandleSubAnswer(tip, i,sub,answer, iter2);
                 }
 
-                itemList.add(new Item("Item"+ i, "Tip " +i , tip));
+                itemList.add(new Item("Item"+ i, "Important tips! "  , tip));
                     Log.d("bup",answer);
                     Log.d("bup",tip);
 

@@ -133,6 +133,7 @@ public class QuestionView extends Fragment {
             if(i>2) {
 
                 listener.QuizDone();
+
             }
 
         } else {
@@ -339,7 +340,7 @@ public class QuestionView extends Fragment {
         DatabaseReference dbRef = db.getReference(getUserQuestionPath());
         dbRef.child("Q&A").child(path).child("" + (i + 1)).child("" + 1).push().setValue(answers.get(0));
         for (int j = 1; j < answers.size(); j++) {
-            dbRef.child("" + (i + 1)).child("" + 2).push().setValue(answers.get(j));
+            dbRef.child("Q&A").child(path).child("" + (i + 1)).child("" + 2).push().setValue(answers.get(j));
         }
     }
 //Loas the corresponding answer based on the question index
