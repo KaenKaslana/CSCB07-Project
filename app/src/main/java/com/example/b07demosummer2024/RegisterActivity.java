@@ -1,6 +1,8 @@
 package com.example.b07demosummer2024;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -8,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -17,6 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     // FirebaseAuth instance
     private FirebaseAuth auth;
+    private FloatingActionButton exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,13 @@ public class RegisterActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         registerButton = findViewById(R.id.registerButton);
         goToLoginButton = findViewById(R.id.goToLoginButton);
+        exitButton = findViewById(R.id.exitButton);
+
+        exitButton.setOnClickListener(v -> {
+            Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+            startActivity(browser);
+            finishAffinity();
+        });
 
         registerButton.setOnClickListener(v -> registerUser());
         goToLoginButton.setOnClickListener(v ->

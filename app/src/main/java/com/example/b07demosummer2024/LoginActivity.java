@@ -1,16 +1,21 @@
 package com.example.b07demosummer2024;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -20,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView errorMessageTextView;
 
     private LoginPresenter presenter;
+    private FloatingActionButton exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         goToRegisterButton = findViewById(R.id.goToRegisterButton);
         errorMessageTextView = findViewById(R.id.errorMessage);
+        exitButton = findViewById(R.id.exitButton);
+
+        exitButton.setOnClickListener(v -> {
+            Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+            startActivity(browser);
+            finishAffinity();
+        });
+
 
         presenter = new LoginPresenter(this);
 

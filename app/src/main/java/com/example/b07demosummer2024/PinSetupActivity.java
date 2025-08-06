@@ -1,6 +1,8 @@
 package com.example.b07demosummer2024;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -9,12 +11,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class PinSetupActivity extends AppCompatActivity {
 
     private EditText pinInput, confirmPinInput;
     private Button submitButton;
 
     private SharedPreferencesHelper sharedPreferencesHelper;
+    private FloatingActionButton exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,13 @@ public class PinSetupActivity extends AppCompatActivity {
         pinInput = findViewById(R.id.pinInput);
         confirmPinInput = findViewById(R.id.confirmPinInput);
         submitButton = findViewById(R.id.submitButton);
+        exitButton = findViewById(R.id.exitButton);
+
+        exitButton.setOnClickListener(v -> {
+            Intent browser = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com"));
+            startActivity(browser);
+            finishAffinity();
+        });
 
         submitButton.setOnClickListener(v -> setupPin());
     }
