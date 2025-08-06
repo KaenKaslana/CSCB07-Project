@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 /**
  *
- *Bryce Chen
+ Bryce Chen
  *
  * Question type for multiple choice for selecting one answer and generating a text box
  *
@@ -32,6 +32,12 @@ public class QMultiToText extends QAnswerFrag implements  IListenClick{
     boolean yes = false;
     String text;
     //initialization
+    /**
+     * Instance method
+     * @param options The options you can pick
+     * @param text Additional free form text prompt
+     * @return instance
+     */
     public static QMultiToText CreateText( String[] options, String text){
         QMultiToText spinToWin = new QMultiToText();
         spinToWin.text = text;
@@ -56,7 +62,10 @@ public class QMultiToText extends QAnswerFrag implements  IListenClick{
         getChildFragmentManager().beginTransaction().replace(R.id.MultiText1, multi).commit();
 
     }
-
+    /**
+     * returns a list of all selected answers and a freeform text answer if there is one
+     * @return the list
+     */
         @Override
     public ArrayList<String> NotifyListener() {
             ArrayList<String> ret = new ArrayList<String>();
@@ -69,6 +78,9 @@ public class QMultiToText extends QAnswerFrag implements  IListenClick{
 
             return ret;
     }
+    /**
+     * create a free form text instance
+     */
     void CreateText() {
         //create the text box fragment
 
@@ -76,6 +88,9 @@ public class QMultiToText extends QAnswerFrag implements  IListenClick{
         getChildFragmentManager().beginTransaction().replace(R.id.MultiText2, input).commit();
         sub.setText(text);
     }
+    /**
+     * remove free form text
+     */
     void DestroyText() {
         //destroy the text box fragment
         sub.setText("");
@@ -86,7 +101,11 @@ public class QMultiToText extends QAnswerFrag implements  IListenClick{
         }
     }
 
-    //check answer and see if you should make a free form box
+    /**
+     * Create a freeform text answer if the answer is "yes"
+     * not the best implementation to be honest
+     * @param  str given answer
+     */
     @Override
     public void Click(String str) {
         Log.d("chup","clicked");

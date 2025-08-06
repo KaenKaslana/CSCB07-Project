@@ -38,7 +38,6 @@ import java.util.Map;
 
 /**
  *
- *Bryce Chen
  *
  *Class that manages the entire question quiz
  *
@@ -109,12 +108,22 @@ public class QuestionView extends Fragment {
 
     static String[] question = null;
 
-    //return the question for the specific index
+    /**
+     * Returns question text for a given index
+     * @param i index
+
+     * @return question string
+     */
     public static String GetQText(int i) {
 
 
         return question[i];
     }
+    /**
+     * get from firebase the path to the question tree based on userid, needed to access and store question answer
+     * @return String path
+     */
+
     //get from firebase the path to the question tree based on userid, needed to access and store question answers
     public static String getUserQuestionPath() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -122,8 +131,12 @@ public class QuestionView extends Fragment {
             return "Users/" + userId ;
     }
 
-
-    //We have three question sections, loads the last and first section and loads the middle based on the firsst question
+    /**
+     *
+     * We have three question sections, loads the last and first section and loads the middle based on the firsst question
+     * @param i inddex of section
+     * @param loadFirst am a going from a lower section to a higher section?
+     */
     protected void LoadSection(int i, boolean loadFirst) {
     //load first indicates whether we are loading from left to right or right to left (am i going to a previous section?)
         final int[] k = {0};
@@ -226,7 +239,11 @@ public class QuestionView extends Fragment {
 
     }
 
-    //Simple initialization for fragment state adapter
+
+    /**
+    Simple initialization for fragment state adapter
+    @param length how long is the adapter
+     */
     protected void loadPagerAdapter(int length) {
         fsa = new QuestionFSA(getActivity(), this, length);
         questionPager.setAdapter(null);
@@ -239,24 +256,28 @@ public class QuestionView extends Fragment {
         super.onAttach(context);
         loadQuestionsFromAssets(context);
     }
-    //Create the tree for a user that doesn't have a tree for storing answers :(
+
+    /**Create the tree for a user that doesn't have a tree for storing answers :(
+     * Creates in firebase
+     */
     void createTree() {
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
 
         DatabaseReference sourceRef = db.getReference("Q&A");
         DatabaseReference destinationRef = db.getReference(getUserQuestionPath());
-
+        //above is just getting the path
         sourceRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     Object data = snapshot.getValue();
 
-                    Map<String, Object> updateMap = new HashMap<>();
-                    updateMap.put("Q&A", data);  // This puts q/a tree into the destination
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("Q&A", data);  // This puts q/a tree values in a hashmap
 
-                    destinationRef.updateChildren(updateMap, (error, ref) -> {
+                    //for every string object pair in map, place a chid with key String and value Object
+                    destinationRef.updateChildren(map, (error, ref) -> {
                         if (error == null) {
                         } else {
                             Log.d("Gupper", "chuppy no");
@@ -335,7 +356,11 @@ public class QuestionView extends Fragment {
         return view;
     }
 
-    //Store answers based on current path
+    /**
+    Store answers based on current path
+     @param answers List of answers gotten usually from NotifyListener
+     @param i what index is the answer (what question number)
+     */
     protected void StoreAnswer(int i, ArrayList<String> answers) {
 
         DatabaseReference dbRef = db.getReference(getUserQuestionPath());
@@ -344,7 +369,10 @@ public class QuestionView extends Fragment {
             dbRef.child("Q&A").child(path).child("" + (i + 1)).child("" + 2).push().setValue(answers.get(j));
         }
     }
-//Loas the corresponding answer based on the question index
+/**
+Loads the corresponding answer based on the question index
+ @param i Index of question
+ */
     protected void LoadAnswer(int i) {
 
         DatabaseReference dbRef = db.getReference(getUserQuestionPath());
@@ -358,9 +386,8 @@ public class QuestionView extends Fragment {
                     child.getRef().removeValue();
                 }
 
-                // Log.d("guh", "" + (answerType));
-                // Log.d("guh", "" + (i+1));
-                //Grab the question type from the firebase datatype and create the corresponding fragment
+
+                //Grab the question type from the firebase datatype and create the corresponding fragment from the switch statement
                 // this is a terrible practice but im too far deep in
 
                 DataSnapshot typeSnap = snapshot.child("Q&A").child(path).child(String.valueOf(i + 1)).child("0");
@@ -389,6 +416,7 @@ public class QuestionView extends Fragment {
                         currentAnswerFrag = QDate.CreateText();
                         break;
                     case 5:
+                        //weird case where the text for a follow up answer is determiend based on index and section
                         String text = null;
                         if (WarmUpPath.equals(path)) {
                             text = subText[0];
@@ -417,22 +445,31 @@ public class QuestionView extends Fragment {
 
     }
 
+    /** calls Notify listener from the currently displayed answer
+     *
+     * @return list of answers
+     */
     public ArrayList<String> GetAnswer() {
         ArrayList<String> answer = currentAnswerFrag.NotifyListener();
 
         return answer;
     }
-    // parse the json file and load the questions into my arrays, stored in a class called section
+    /**
+    parse the json file in the assets folder and load the questions into my arrays, stored in a class called section,
+    @param context the current context
+     */
     public static void loadQuestionsFromAssets(Context context) {
         try {
+            //read from the json file
             InputStream stream = context.getAssets().open("questions.json");
             int size = stream.available();
             byte[] buffer = new byte[size];
 
             stream.read(buffer);
             stream.close();
+            //convert it to a json string
             String file = new String(buffer, StandardCharsets.UTF_8);
-            // Parse root as JsonObject
+            // Parse root as JsonObject for each questionnaire section
             JSONObject root = new JSONObject(file);
             warmupSection = LoadSection("warmup_array", root);
             stillSection = LoadSection("still_in_array", root);
@@ -444,18 +481,30 @@ public class QuestionView extends Fragment {
             stream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            Log.d("goose", "silly goose");
         }
 
     }
-    //store into a section class based on the given json root
+    /**
+     *store into a section class based on the given json root for the assets json folder
+     * @param sect The string key value in the json value for assets for a given questionnaire section
+     * @param root The root to parse
+     */
     static Section LoadSection(String sect, JSONObject root) throws Exception {
+        //basically the json file is arranged as an array
+        //each array object are two keys of question and tips
+        //question matches to a string
+        //tips matches to a dictionary that maps answers to a specific tip
         JSONArray warmupArray = root.getJSONArray(sect);
         Section res = new Section(warmupArray.length());
         for (int i = 0; i < warmupArray.length(); i++) {
+            //get pair of question tips
             JSONObject item = warmupArray.getJSONObject(i);
-
+           // get the question
             String question = item.getString("question");
             res.questions[i] = question;
+
+            //store all the tips into this hashmap
             JSONObject tips = item.getJSONObject("tips");
 
             Iterator<String> keys = tips.keys();
@@ -470,9 +519,14 @@ public class QuestionView extends Fragment {
     }
 
 }
+
+/**
+ * Class for storing information for each quiz section
+ */
 class Section {
     String[] questions;
     ArrayList<Hashtable<String, String>> tips;
+
     public Section(int arr) {
         questions = new String[arr];
         tips = new ArrayList<Hashtable<String, String>>();

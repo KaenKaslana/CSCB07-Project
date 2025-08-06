@@ -59,7 +59,9 @@ public class RecyclerViewStaticFragment extends Fragment {
         return view;
     }
 
-    //Create the recycler view basically
+    /**
+     * Create the recycler view adapters
+     */
     void CreateList() {
 
         itemAdapter = new ItemAdapter(itemList);
@@ -67,12 +69,13 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     }
 
-    //Load the first and last section, and the middle section based on the section
+    /**
+     * Load the first and last section, and the middle section based on the section
+     */
 
     void LoadAll() {
         LoadTips("WarmUp", QuestionView.warmupSection.tips);
        GetFirstPath();
-   // LoadTips("Still", QuestionView.stillSection.tips);
 
        LoadTips("Follow", QuestionView.followSection.tips);
 
@@ -80,8 +83,13 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     }
 
+    /**
+     * get teh answer from the first question, and then get the corresponding section's answers
+     *
+     */
+
     void GetFirstPath() {
-        //get teh answer from the first question, and then get the corresponding section's answers
+        // basically we get the first answer and based on that call load tips with the correct arguments
         DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"/Q&A/WarmUp");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -107,8 +115,13 @@ public class RecyclerViewStaticFragment extends Fragment {
         });
     }
     Hashtable<String, Integer> subSet;
+    /**
+     * subset stores into a hashset the path and question index, and maps to a format to displaying tips
+     * to be honest this is a really crappy implementation
     //0 is use as answer, 1 is subanswer, 2 is sequence in commas, 3 is follow up sepcial (0 as ttemp),4 is live with
     // this initilization for tips with special formats, see above
+
+     */
     private void InitSub() {
         subSet = new Hashtable<String, Integer>();
         subSet.put(QuestionView.WarmUpPath + 1, 0);
@@ -128,13 +141,22 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     }
     String safe;
-    //handlign replacing teh "answer" bracket based on the tip display type
+    /**
+     * handling replacing teh "answer" bracket based on the tip display type from subset
+     * @param tip the tip string
+     * @param sub what section
+     * @param index of question
+     * @param answer answer string
+     * @param iter iterable storing any additional answers (some answers have multiple answers)
+     */
     private String HandleSubAnswer(String tip, int index, String sub, String answer, Iterable<DataSnapshot> iter) {
         String res= null;
         String ans = "{answer}";
+        //a janky way to store the safe house answer,
         if(sub.equals(QuestionView.WarmUpPath) && index == 3) {
             safe = answer;
         }
+        //get {answer} replacement strategy from the subSet set
         int toDo = subSet.get(sub+index);
         if(toDo == 0) {
             return tip.replace(ans, answer);
@@ -152,6 +174,7 @@ public class RecyclerViewStaticFragment extends Fragment {
             return tip.replace(ans, answer);
         }else if (toDo == 4)
         {
+            //weird case for a specific tip, poorly implemented but i was tired :(
         if(answer.equals("Partner")) {  return tip.replace(ans,safe); }
         return tip.replace(ans, answer);
         }
@@ -159,7 +182,11 @@ public class RecyclerViewStaticFragment extends Fragment {
         return null;
     }
 
-    //Get answers from database and then create the list
+    /**
+     * Get answers from database and then create the list for a given section
+     * @param sub the section
+     * @param arr the tips map retrieved from the json file
+     */
     private void LoadTips(String sub, ArrayList<Hashtable<String,String>> arr) {
         DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"/Q&A/" + sub);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -169,6 +196,7 @@ public class RecyclerViewStaticFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Iterable<DataSnapshot> iter = snapshot.child("" + i).child("" + 1).getChildren();
                 while(iter.iterator().hasNext()){
+                    //get answer from database
                     Log.d("bup","sup" + i);
                  DataSnapshot child = iter.iterator().next();
                     String answer = child.getValue(String.class);
@@ -176,13 +204,14 @@ public class RecyclerViewStaticFragment extends Fragment {
 
                 String tip = arr.get(i-1).get(answer);
                 if(tip == null) {tip = arr.get(i-1).get("");}
+                // if the tip has a replaceable block, get any additional answers and let another function handle it
                 if(tip.contains("{answer}")) {
 
                     Iterable<DataSnapshot> iter2 = snapshot.child("" + i).child("" + 2).getChildren();
 
                     tip =  HandleSubAnswer(tip, i,sub,answer, iter2);
                 }
-
+                //add to list of tips and notify that a tip is added
                 itemList.add(new Item("Item"+ i, "Important tips! "  , tip));
                     itemAdapter.notifyItemInserted(itemList.size()-1);
                     Log.d("bup",answer);

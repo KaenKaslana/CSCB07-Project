@@ -8,7 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 /**
  *
- *Bryce Chen
  *
  * Fragment state adapater changed to display Question Fragments
  *
@@ -23,13 +22,23 @@ int  count;
         this.count = count;
         this.qView = qView;
     }
-    //creates a question
+    /**
+     * Instance method for fragments
+     * @param position The position in the viewpager
+
+     * @return instance
+     */
     @NonNull
     @Override
     public Fragment createFragment(int position) {
 
           return QuestionFrag.CreateQFrag(position);
     }
+
+    /**
+     * return expected number of questions to display
+     * @return count
+     */
     // returns how many expected questions to display
     @Override
     public  int getItemCount() {

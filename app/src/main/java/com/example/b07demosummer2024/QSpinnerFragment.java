@@ -16,7 +16,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 /**
  *
- *Bryce Chen
  *
  * Question type for spinner selection
  *
@@ -27,6 +26,12 @@ public class QSpinnerFragment extends QAnswerFrag {
    protected String [] myOptions;
     Spinner spinner;
     //initialization
+    /**
+     * Instance method
+     * @param myOptions The options you can pick
+
+     * @return instance
+     */
    public static QSpinnerFragment CreateSpinner(String[] myOptions){
        QSpinnerFragment spinToWin = new QSpinnerFragment();
        spinToWin.myOptions = myOptions;
@@ -64,7 +69,10 @@ public class QSpinnerFragment extends QAnswerFrag {
         super.onDestroyView();
         spinner = null;
     }
-
+    /**
+     * returns a list with one entry being the selected option
+     * @return the list
+     */
     @Override
     public ArrayList<String> NotifyListener() {
         ArrayList<String> list = new ArrayList<String>();

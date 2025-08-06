@@ -16,18 +16,17 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
- *
- *Bryce Chen
- *
- * Question type for free form text
- *
+ * A fragment for answering in free form text
  *
  */
 public class QFreeText extends QAnswerFrag{
 
     EditText editText;
     // initialization
-
+    /**
+     * Instance method
+     * @return instance
+     */
     public static QFreeText CreateText( ){
         QFreeText spinToWin = new QFreeText();
         return spinToWin;
@@ -50,7 +49,10 @@ public class QFreeText extends QAnswerFrag{
     }
 
 
-    // Ensure the given list of answers have no empty answers
+    /**
+     * returns a list with one free form answer, returns an empty list for an empty answer
+     * @return the list
+     */
     @Override
     public ArrayList<String> NotifyListener() {
         ArrayList<String> list = new ArrayList<String>();

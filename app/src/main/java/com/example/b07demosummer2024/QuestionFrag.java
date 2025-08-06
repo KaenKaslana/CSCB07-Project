@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 /**
  *
- *Bryce Chen
  *
  *Class for displaying questions
  *
@@ -25,6 +24,12 @@ public class QuestionFrag extends Fragment {
     protected TextView textView;
   //  protected String questionText;
     int answerType = 0;
+    /**
+     * Instance method
+     * @param position, what instance of question
+
+     * @return instance
+     */
     public static QuestionFrag CreateQFrag(int position ) {
        // factory method needed since it lets android restore fragments, also why I use bundle :(
         QuestionFrag frag = new QuestionFrag();
@@ -45,7 +50,6 @@ public class QuestionFrag extends Fragment {
     @Override
     public View onCreateView( LayoutInflater inflater,  ViewGroup container,
                               Bundle savedInstanceState) {
-        //inflates the xml into an actual view and returns it
 
 
         View parent = inflater.inflate(R.layout.question_fragment, container, false);
@@ -58,6 +62,8 @@ public class QuestionFrag extends Fragment {
     super.onViewCreated(view, savedInstanceState);
         if(answerType == 0) {
         //on creation, just set the text based on its order (QUESTION_NUM_KEY)
+            //get from main class the question to display based on my index
+
 
 
             textView = view.findViewById(R.id.questionTextView);

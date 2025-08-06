@@ -19,11 +19,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 /**
- *
- *Bryce Chen
- *
- * Question type for multiple choice for selecting one or many answers
- *
+ * A fragment for answering multiple choice
  *
  */
 
@@ -46,6 +42,13 @@ IListenClick listen;
         return spinToWin;
 
     }
+    /**
+     * Instance method
+     * @param options The options you can pick
+     * @param multi If choices can be selected many times
+     * @param click Notify when an answer is selected
+     * @return instance
+     */
     public static QMulti CreateText( String[] options, boolean multi, IListenClick click){
         QMulti spinToWin = new QMulti();
         spinToWin.multi= multi;
@@ -118,6 +121,7 @@ IListenClick listen;
                 }
             });
         //    questionGroup.addView(option);
+            // add to layout
             questionGroup.addView(option);
         }
        /* questionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -139,7 +143,10 @@ IListenClick listen;
 
         options = null;
     }
-
+    /**
+     * returns a list of all selected answers
+     * @return the list
+     */
     @Override
     public ArrayList<String> NotifyListener() {
 

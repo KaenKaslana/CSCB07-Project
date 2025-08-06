@@ -19,18 +19,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- *
- *Bryce Chen
- *
- * Question type for free form date selection
- *
+ * A fragment for providing an answer in the format of date
  *
  */
 public class QDate extends QAnswerFrag{
 
     DatePickerDialog dates;
     Button button;
-    // initialization
+    /**
+     * Instantiation method
+     * @return instance
+     */
     public static QDate CreateText( ){
         QDate spinToWin = new QDate();
 
@@ -81,7 +80,10 @@ public class QDate extends QAnswerFrag{
     }
 
 
-    //implemenation of notifying observers
+    /**
+     * return a list of one entry being the date
+     * @return the list
+     */
     @Override
     public ArrayList<String> NotifyListener() {
         ArrayList<String> list = new ArrayList<String>();
