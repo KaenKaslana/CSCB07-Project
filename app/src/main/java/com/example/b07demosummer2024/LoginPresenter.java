@@ -14,10 +14,14 @@ public class LoginPresenter {
         this.view = view;
         this.model = new LoginModel();
     }
+    public LoginPresenter(LoginActivity view, LoginModel model) {
+        this.view = view;
+        this.model = model;
+    }
 
     public void validateAndLogin(String email, String password) {
         // Validate input
-        if (TextUtils.isEmpty(email)) {
+        if (email == null || email.isEmpty()) {
             view.showError("Please enter email");
             return;
         }
@@ -25,7 +29,7 @@ public class LoginPresenter {
             view.showError("Please enter a valid email");
             return;
         }
-        if (TextUtils.isEmpty(password)) {
+        if (password == null || password.isEmpty()) {
             view.showError("Please enter password");
             return;
         }
