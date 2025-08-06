@@ -51,7 +51,7 @@ public class RecyclerViewStaticFragment extends Fragment {
         itemAdapter = new ItemAdapter(itemList);
         recyclerView.setAdapter(itemAdapter);
        Log.d("recycle", "hello");
-
+        CreateList();
         db = FirebaseDatabase.getInstance();
         InitSub();
         LoadAll();
@@ -82,13 +82,14 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     void GetFirstPath() {
         //get teh answer from the first question, and then get the corresponding section's answers
-        DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"Q&A/WarmUp");
+        DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"/Q&A/WarmUp");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Iterable<DataSnapshot> iter = snapshot.child("" + 1).child("" + 1).getChildren();
                 String choice = iter.iterator().next().getValue(String.class);
+                Log.d("recycle", choice);
                 ArrayList<Hashtable<String,String>> arr = null;
                 if(choice.equals("Still in a relationship")) {
 
@@ -160,7 +161,7 @@ public class RecyclerViewStaticFragment extends Fragment {
 
     //Get answers from database and then create the list
     private void LoadTips(String sub, ArrayList<Hashtable<String,String>> arr) {
-        DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"Q&A/" + sub);
+        DatabaseReference dbRef = db.getReference(QuestionView.getUserQuestionPath()+"/Q&A/" + sub);
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             int i =1;
 
@@ -183,15 +184,16 @@ public class RecyclerViewStaticFragment extends Fragment {
                 }
 
                 itemList.add(new Item("Item"+ i, "Important tips! "  , tip));
+                    itemAdapter.notifyItemInserted(itemList.size()-1);
                     Log.d("bup",answer);
                     Log.d("bup",tip);
 
 
                     i++;
                     iter = snapshot.child("" + i).child("" + 1).getChildren();
-
                 }
-                CreateList();
+
+
             }
 
             @Override

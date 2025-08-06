@@ -1,5 +1,7 @@
 package com.example.b07demosummer2024;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,10 @@ public class HomeFragment extends Fragment implements IQuizDone {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_home_fragment, container, false);
 
+        SharedPreferences prefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+        boolean DoneQuiz = prefs.getBoolean("DoneQuiz", false);
+
         Button buttonQuestionnaire = view.findViewById(R.id.buttonQuestionnaire);
         Button buttonCategory = view.findViewById(R.id.buttonCategory);
         Button buttonReminder = view.findViewById(R.id.buttonReminder);
@@ -34,6 +40,11 @@ public class HomeFragment extends Fragment implements IQuizDone {
         buttonQuestionnaire.setOnClickListener(v -> {
                 quiz = new QuestionView();
                 quiz.Listen(this);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("DoneQuiz", false);
+            editor.apply();
+
                 loadFragment(quiz); }
         );
 
@@ -46,6 +57,15 @@ public class HomeFragment extends Fragment implements IQuizDone {
         buttonSupportConnection.setOnClickListener(v ->
                 loadFragment(new SupportConnectionFragment())
         );
+
+
+        if(!DoneQuiz) {
+            //  SharedPreferences prefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            quiz = new QuestionView();
+            quiz.Listen(this);
+            loadFragment(quiz);
+
+        }
 
         return view;
     }
@@ -61,5 +81,9 @@ public class HomeFragment extends Fragment implements IQuizDone {
     public void QuizDone() {
         Log.d("quiz", "hello");
         requireActivity().getSupportFragmentManager().popBackStack();
+        SharedPreferences prefs = requireContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("DoneQuiz", true);
+        editor.apply();
     }
 }

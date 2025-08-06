@@ -213,6 +213,7 @@ public class QuestionView extends Fragment {
 
 
             }
+
             questionState = i;
 
             //loadPagerAdapter(options.length);

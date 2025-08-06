@@ -54,6 +54,6 @@
 
   ],
   "follow_up_array": [
-    { "question": "Which type of support would help most right now?", "tips": {"": "Reach out to {answer} - they can offer the specialized help you need right now."} }
+    { "question": "Which type of support would help most right now?", "tips": {"": "Reach out to {answer} in your city - they can offer the specialized help you need right now."} }
   ]
 }
