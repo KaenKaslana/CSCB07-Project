@@ -2,63 +2,69 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    android:padding="16dp">
 
     <Button
         android:id="@+id/buttonQuestionnaire"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Questionnaire"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCategory"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/Tips"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"/>
 
     <Button
         android:id="@+id/Tips"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Tips"
+        app:layout_constraintTop_toBottomOf="@id/buttonQuestionnaire"
         app:layout_constraintBottom_toTopOf="@+id/buttonCategory"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/buttonCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Emergency Info Storage"
-        app:layout_constraintTop_toBottomOf="@+id/buttonQuestionnaire"
+        app:layout_constraintTop_toBottomOf="@id/Tips"
+        app:layout_constraintBottom_toTopOf="@+id/buttonReminder"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonReminder"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/buttonReminder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Reminder"
-        app:layout_constraintTop_toBottomOf="@+id/buttonCategory"
+        app:layout_constraintTop_toBottomOf="@id/buttonCategory"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSupportConnection"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSupportConnection"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Button
         android:id="@+id/buttonSupportConnection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Support Resource"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/buttonReminder"
+        app:layout_constraintBottom_toTopOf="@+id/logoutButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonReminder" />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        app:layout_constraintTop_toBottomOf="@id/buttonSupportConnection"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

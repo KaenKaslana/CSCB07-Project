@@ -95,9 +95,9 @@ public class RegisterActivity extends AppCompatActivity {
                                                 "Registration successful!",
                                                 Toast.LENGTH_SHORT
                                         ).show();
-                                        // Navigate to login
+                                        // Navigate to PinSetUp
                                         startActivity(new Intent(
-                                                RegisterActivity.this, LoginActivity.class));
+                                                RegisterActivity.this, PinSetupActivity.class));
                                         finish();
                                     } else {
                                         Toast.makeText(

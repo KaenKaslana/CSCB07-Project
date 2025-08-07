@@ -43,40 +43,25 @@ public class SupportConnectionFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(
-                R.layout.fragment_support_connection,
-                container, false
-        );
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_support_connection, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         spinnerCity  = view.findViewById(R.id.spinnerCity);
 
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext())
-        );
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         map = ResourceLoader.loadResources(getContext());
         db  = FirebaseDatabase.getInstance();
 
         // Set up Spinner
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                CITIES
-        );
-        adapter.setDropDownViewResource(
-                android.R.layout.simple_spinner_dropdown_item
-        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, CITIES);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCity.setAdapter(adapter);
 
         // When user selects a city, refresh list
-        spinnerCity.setOnItemSelectedListener(
-                new AdapterView.OnItemSelectedListener() {
+        spinnerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent,
-                                               View v, int pos, long id) {
+                    public void onItemSelected(AdapterView<?> parent, View v, int pos, long id) {
                         updateRecycler(CITIES[pos]);
                     }
                     @Override public void onNothingSelected(AdapterView<?> parent) { }
@@ -85,14 +70,9 @@ public class SupportConnectionFragment extends Fragment {
         // Determine initial city from database (or default)
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            DatabaseReference ref = db.getReference(
-                            QuestionView.getUserQuestionPath()
-                    ).child("Q&A")
-                    .child(QuestionView.WarmUpPath)
-                    .child("2").child("1");
+            DatabaseReference ref = db.getReference(QuestionView.getUserQuestionPath()).child("Q&A").child(QuestionView.WarmUpPath).child("2").child("1");
 
-            ref.addListenerForSingleValueEvent(
-                    new ValueEventListener() {
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snap) {
                             String city = "Toronto";
@@ -113,7 +93,7 @@ public class SupportConnectionFragment extends Fragment {
                         }
                     });
         } else {
-            // no user → default to Toronto
+            // no user default to Toronto
             spinnerCity.setSelection(0);
         }
 
@@ -122,8 +102,6 @@ public class SupportConnectionFragment extends Fragment {
 
     private void updateRecycler(String city) {
         List<Resource> resources = map.get(city);
-        recyclerView.setAdapter(
-                new ResourceAdapter(getContext(), resources)
-        );
+        recyclerView.setAdapter(new ResourceAdapter(getContext(), resources));
     }
 }
