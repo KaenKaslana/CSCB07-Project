@@ -21,14 +21,42 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity that displays the user's saved safe locations and provides
+ * navigation to add, edit, or delete entries.
+ * 
+ * Loads {SafeLocationInfo} objects from Firebase Realtime Database,
+ * binds them to a RecyclerView via {SafeLocationAdapter}, and
+ * implements {SafeLocationAdapter.OnItemClickListener} to handle
+ * item selections.
+ * 
+ */
 public class SafeLocationsActivity extends AppCompatActivity implements SafeLocationAdapter.OnItemClickListener {
 
+    /** FirebaseAuth instance for checking user authentication. */
     private FirebaseAuth mAuth;
+
+    /** RecyclerView for displaying the list of safe locations. */
     private RecyclerView recyclerView;
+
+    /** Adapter for binding {@link SafeLocationInfo} items to the RecyclerView. */
     private SafeLocationAdapter adapter;
+
+    /** Backing list of location models loaded from Firebase. */
     private List<SafeLocationInfo> locationList;
+
+    /** Firebase Database reference pointing to the user's safeLocations node. */
     private DatabaseReference locationsRef;
 
+    /**
+     * Called when the activity is first created. Initializes FirebaseAuth,
+     * verifies the signed-in user, configures the RecyclerView and action
+     * buttons, and begins loading data from Firebase.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down, this contains
+     *                           the data it most recently supplied; otherwise {@code null}.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +92,11 @@ public class SafeLocationsActivity extends AppCompatActivity implements SafeLoca
         loadLocations();
     }
 
+    /**
+     * Attaches a ValueEventListener to the Firebase reference to load
+     * all safe locations, update the local list, and refresh the adapter
+     * whenever data changes.
+     */
     private void loadLocations() {
         locationsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -87,6 +120,12 @@ public class SafeLocationsActivity extends AppCompatActivity implements SafeLoca
         });
     }
 
+    /**
+     * Callback invoked when a RecyclerView item is clicked.
+     * Displays a toast showing the selected location's address.
+     *
+     * @param position Index of the clicked item in {@link #locationList}.
+     */
     @Override
     public void onItemClick(int position) {
         SafeLocationInfo selectedLocation = locationList.get(position);
