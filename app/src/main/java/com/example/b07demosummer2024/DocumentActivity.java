@@ -23,6 +23,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DocumentActivity manages the user interface for viewing, uploading, renaming, and deleting documents.
+ * 
+ * It implements the following primary functions:
+ * 
+ *   Display a scrollable list of DocumentInfo items from Firebase.
+ *   Allow the user to pick a local file and upload its metadata to Firebase.
+ *   Enable selection highlighting for documents in the list.
+ *   Present a dialog to rename a selected document and update Firebase.
+ *   Delete the selected document metadata from Firebase upon user confirmation.
+ * 
+ * Implements DocumentAdapter.OnItemClickListener to handle list item taps.
+ */
 public class DocumentActivity extends AppCompatActivity implements DocumentAdapter.OnItemClickListener {
 
     private static final int PICK_FILE_REQUEST = 1001;
@@ -41,6 +54,17 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
     private int selectedPosition = RecyclerView.NO_POSITION;
     private FirebaseAuth mAuth;
 
+    /**
+     * Called when the activity is first created.
+     * 
+     * Initializes UI components, checks authentication, sets up Firebase references,
+     * loads existing documents, and configures button listeners for upload, delete,
+     * and rename operations.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being
+     *                           shut down then this Bundle contains the data it most recently
+     *                           supplied; otherwise null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +117,13 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
 
     }
 
-    // Pop up dialog to input new name of document
+    /**
+     * Displays an AlertDialog with an EditText input to rename the given document.
+     * 
+     * When "Rename" is tapped, calls {@link #renameDocument(DocumentInfo, String)}.
+     *
+     * @param document the DocumentInfo object to rename
+     */
     private void showRenameDialog(DocumentInfo document) {
         // Create a simple EditText dialog
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
@@ -116,6 +146,13 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
         builder.show();
     }
 
+    /**
+     * Renames the specified document in Firebase by removing the old key and writing
+     * a new DocumentInfo under the new name.
+     *
+     * @param document the original DocumentInfo to rename
+     * @param newName  the new name to assign
+     */
     private void renameDocument(DocumentInfo document, String newName) {
         // Remove the old document entry
         documentsRef.child(document.name)
@@ -146,6 +183,13 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
         startActivityForResult(intent, PICK_FILE_REQUEST);
     }
 
+    /**
+     * Receives the chosen file URI and calls {@link #uploadFileToFirebase(Uri)}.
+     *
+     * @param requestCode the original request code
+     * @param resultCode  the result code indicating success or cancellation
+     * @param data        the Intent containing the chosen file's URI
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -205,6 +249,12 @@ public class DocumentActivity extends AppCompatActivity implements DocumentAdapt
         });
     }
 
+    /**
+     * Called when a document list item is tapped.
+     * Highlights the item and stores it for rename/delete operations.
+     *
+     * @param position the adapter position of the tapped item
+     */
     @Override
     public void onItemClick(int position) {
         selectedPosition = position;
