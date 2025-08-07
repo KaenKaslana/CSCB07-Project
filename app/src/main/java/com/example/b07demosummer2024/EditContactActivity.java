@@ -23,15 +23,41 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity that allows the user to view and edit their saved emergency contacts.
+ * 
+ * Displays a RecyclerView of {@link ContactInfo} items and opens an edit dialog when
+ * an item is clicked. Changes are persisted to Firebase Realtime Database.
+ * 
+ */
 public class EditContactActivity extends AppCompatActivity implements ContactAdapter.OnItemClickListener {
 
+    /** RecyclerView displaying the list of contacts for editing. */
     private RecyclerView recyclerView;
+
+    /** Adapter for binding {ContactInfo} objects to the RecyclerView. */
     private ContactAdapter adapter;
+
+    /** Backing list of contacts loaded from Firebase. */
     private List<ContactInfo> contactList;
+
+    /** Firebase Database reference pointing to the current user's emergency contacts. */
     private DatabaseReference contactsRef;
+
+    /** Firebase authentication instance for retrieving the current user. */
     private FirebaseAuth mAuth;
+
+    /** Currently selected contact for editing. */
     private ContactInfo selectedContact;
 
+    /**
+     * Initializes the activity: checks authentication, sets up Firebase references,
+     * configures RecyclerView, and loads contacts.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously
+     *                           being shut down, this holds the data it most recently
+     *                           supplied; otherwise {@code null}.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +87,10 @@ public class EditContactActivity extends AppCompatActivity implements ContactAda
         loadContacts();
     }
 
+    /**
+     * Loads the contacts from Firebase and listens for changes. Updates the
+     * {contactList} and notifies the adapter on data change.
+     */
     private void loadContacts() {
         contactsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,6 +113,12 @@ public class EditContactActivity extends AppCompatActivity implements ContactAda
         });
     }
 
+    /**
+     * Called when a contact item is clicked in the RecyclerView.
+     * Saves the selected contact and opens the edit dialog.
+     *
+     * @param position Index of the clicked item in {@link #contactList}.
+     */
     @Override
     public void onItemClick(int position) {
         selectedContact = contactList.get(position);
@@ -90,6 +126,12 @@ public class EditContactActivity extends AppCompatActivity implements ContactAda
         showEditDialog(selectedContact);
     }
 
+    /**
+     * Displays an AlertDialog to edit the details of the given contact.
+     * Validates input before invoking {#updateContactInFirebase(ContactInfo)}.
+     *
+     * @param contact The {ContactInfo} object to be edited.
+     */
     private void showEditDialog(ContactInfo contact) {
         View v = LayoutInflater.from(this).inflate(R.layout.dialog_edit_contact, null);
         EditText nameEt = v.findViewById(R.id.dialogEditName);
@@ -124,6 +166,12 @@ public class EditContactActivity extends AppCompatActivity implements ContactAda
                 .show();
     }
 
+    /**
+     * Persists the updated contact details to Firebase under its unique ID.
+     * Shows a toast on success or failure.
+     *
+     * @param contact The updated {ContactInfo} to write.
+     */
     private void updateContactInFirebase(ContactInfo contact) {
         String id = contact.getId();
         if (id == null) {
