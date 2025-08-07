@@ -21,14 +21,39 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity that displays the user's emergency contacts and provides navigation
+ * to add, edit, or delete contacts.
+ * 
+ * Loads contacts from Firebase Realtime Database into a RecyclerView. Implements
+ * {ContactAdapter.OnItemClickListener} to handle item clicks.
+ * 
+ */
 public class EmergencyContactsActivity extends AppCompatActivity implements ContactAdapter.OnItemClickListener {
 
+    /** Firebase authentication instance for retrieving the current user. */
     private FirebaseAuth mAuth;
+
+    /** RecyclerView displaying the list of emergency contacts. */
     private RecyclerView recyclerView;
+
+    /** Adapter for binding {ContactInfo} objects to the RecyclerView. */
     private ContactAdapter adapter;
+
+    /** Backing list of contacts loaded from Firebase. */
     private List<ContactInfo> contactList;
+
+    /** Firebase Database reference pointing to the current user's emergencyContacts node. */
     private DatabaseReference contactsRef;
 
+    /**
+     * Initializes the activity: checks user authentication, sets up Firebase
+     * references, configures RecyclerView and navigation buttons, and loads contacts.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down, this holds the data
+     *                           it most recently supplied; otherwise {@code null}.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +90,10 @@ public class EmergencyContactsActivity extends AppCompatActivity implements Cont
         loadContactsFromFirebase();
     }
 
+    /**
+     * Loads emergency contacts from Firebase and listens for data changes.
+     * Updates {#contactList} and notifies the adapter upon change.
+     */
     private void loadContactsFromFirebase() {
         contactsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,6 +118,11 @@ public class EmergencyContactsActivity extends AppCompatActivity implements Cont
         });
     }
 
+    /**
+     * Handles clicks on RecyclerView items by showing a toast with the contact's name.
+     *
+     * @param position Index of the clicked item in {@link #contactList}.
+     */
     @Override
     public void onItemClick(int position) {
         ContactInfo selectedContact = contactList.get(position);
