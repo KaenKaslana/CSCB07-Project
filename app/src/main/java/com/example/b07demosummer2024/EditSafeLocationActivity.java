@@ -22,16 +22,43 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity to display and edit the user's saved safe locations.
+ * 
+ * Loads a list of {SafeLocationInfo} from Firebase Realtime Database,
+ * shows them in a RecyclerView, and opens an edit dialog when an item is clicked.
+ * User edits are persisted back to Firebase.
+ * 
+ */
 public class EditSafeLocationActivity extends AppCompatActivity
         implements SafeLocationAdapter.OnItemClickListener {
 
+    /** RecyclerView displaying the list of safe locations for editing. */
     private RecyclerView recyclerView;
+
+    /** Adapter for binding {SafeLocationInfo} items to the RecyclerView. */
     private SafeLocationAdapter adapter;
+
+    /** Backing list of safe locations loaded from Firebase. */
     private List<SafeLocationInfo> locationList;
+
+    /** Firebase Database reference pointing to the current user's safeLocations node. */
     private DatabaseReference locationsRef;
+
+    /** Firebase authentication instance for retrieving the current user. */
     private FirebaseAuth mAuth;
+
+    /** Currently selected safe location for editing. */
     private SafeLocationInfo selectedLocation;
 
+    /**
+     * Initializes the activity: checks authentication, sets up Firebase references,
+     * configures RecyclerView, and loads safe locations.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously
+     *                           being shut down, this holds the data it most recently
+     *                           supplied; otherwise {@code null}.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +88,10 @@ public class EditSafeLocationActivity extends AppCompatActivity
         loadLocations();
     }
 
+    /**
+     * Loads safe locations from Firebase and listens for data changes.
+     * Updates {#locationList} and notifies the adapter on change.
+     */
     private void loadLocations() {
         locationsRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -84,6 +115,12 @@ public class EditSafeLocationActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Called when a safe location item is clicked.
+     * Saves the selected location and opens the edit dialog.
+     *
+     * @param position Index of the clicked item in {#locationList}.
+     */
     @Override
     public void onItemClick(int position) {
         selectedLocation = locationList.get(position);
@@ -91,6 +128,12 @@ public class EditSafeLocationActivity extends AppCompatActivity
         showEditDialog(selectedLocation);
     }
 
+    /**
+     * Displays an AlertDialog to edit the address and notes of the given location.
+     * Validates input and calls {#updateLocation(SafeLocationInfo)} on confirmation.
+     *
+     * @param location The {SafeLocationInfo} object to be edited.
+     */
     private void showEditDialog(SafeLocationInfo location) {
         View dialogView = getLayoutInflater()
                 .inflate(R.layout.dialog_edit_safe_location, null);
@@ -119,6 +162,12 @@ public class EditSafeLocationActivity extends AppCompatActivity
                 .show();
     }
 
+    /**
+     * Writes the updated safe location data back to Firebase under its unique ID.
+     * Shows a toast on success or failure.
+     *
+     * @param location The updated {SafeLocationInfo} to write.
+     */
     private void updateLocation(SafeLocationInfo location) {
         String id = location.getId();
         if (id == null) {
