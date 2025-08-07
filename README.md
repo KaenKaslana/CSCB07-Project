@@ -13,3 +13,11 @@ Features
 *Reminder display with details
 *Edit/Delete existing reminders
 *Exit Button that redirects to Google
+
+Mujtaba Amaan - Login/register with email/password, PIN, logout, MVP refactoring.
+
+Features
+*Logging/registering using using email and password
+*Using pre set pin to log in
+*logout safely
+*Login is changed to MVP
