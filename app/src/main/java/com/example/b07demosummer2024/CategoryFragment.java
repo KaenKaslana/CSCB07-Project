@@ -14,7 +14,30 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+/**
+ * {CategoryFragment} is the main screen where users choose which
+ * data category they wish to manage.  It presents buttons for:
+ * <ul>
+ *   <li>Documents</li>
+ *   <li>Emergency Contacts</li>
+ *   <li>Safe Locations</li>
+ *   <li>Medications</li>
+ * </ul>
+ * Tapping a button navigates to the corresponding activity for that category.
+ */
+
 public class CategoryFragment extends Fragment {
+
+    /**
+     * Called when the activity is first created.  Sets up edge-to-edge drawing,
+     * applies window insets padding to avoid overlap with system bars, and
+     * wires up the four category buttons to launch their respective activities.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down, this Bundle contains
+     *                           the data it most recently supplied.  Otherwise it is null.
+     */
+    
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,24 +56,28 @@ public class CategoryFragment extends Fragment {
             return insets;
         });
 
+        // "Documents to pack" button
         Button documentsButton = root.findViewById(R.id.documentsButton);
         documentsButton.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), DocumentActivity.class);
             startActivity(intent);
         });
 
+        // "Emergency contact" button
         Button emergencyContactsButton = root.findViewById(R.id.contactsButton);
         emergencyContactsButton.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), EmergencyContactsActivity.class);
             startActivity(intent);
         });
 
+        // "Safe locations" button
         Button safeLocationsButton = root.findViewById(R.id.locationsButton);
         safeLocationsButton.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), SafeLocationsActivity.class);
             startActivity(intent);
         });
 
+        // "Medications" button
         Button medicationsButton = root.findViewById(R.id.medicationsButton);
         medicationsButton.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), MedicationActivity.class);
