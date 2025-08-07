@@ -21,3 +21,10 @@ Features
 *Using pre set pin to log in
 *logout safely
 *Login is changed to MVP
+
+Libo Wang - Emergency Information Storage
+
+Features
+*Respective information storage pages for different data categories
+*Store information via complete files or input texts
+*Allow addition, edition and deletion of all information stored
