@@ -13,13 +13,46 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * {AddSafeLocationActivity} displays a form that allows the user
+ * to add a new “safe location” (address + optional notes) into Firebase
+ * Realtime Database under their own profile.
+ * 
+ * On launch, it checks for an authenticated user; if none is present,
+ * it shows a prompt and closes.  Upon successful submission, it pushes
+ * a {SafeLocationInfo} object to:
+ * 
+ * /Users/{uid}/safeLocations/{locationId}
+ * 
+ * and then finishes the activity.
+ * 
+ */
+
 public class AddSafeLocationActivity extends AppCompatActivity {
 
+    /** Input field for the location’s address (required) and additional notes for this address. */
     private EditText addressInput, notesInput;
+
+    /** Button to confirm adding the new safe location. */
     private Button addButton;
+
+    /** Reference to the “safeLocations” node under the current user. */
     private DatabaseReference locationsRef;
+
+    /** FirebaseAuth instance for checking the current signed-in user. */
     private FirebaseAuth mAuth;
 
+    /**
+     * Called when the activity is first created.  Sets up the UI bindings,
+     * verifies that a user is logged in, initializes the database reference,
+     * and installs the click listener for the “Add” button.
+     *
+     * @param savedInstanceState If the activity is being re-initialized
+     *                           after previously being shut down, this Bundle
+     *                           contains the data it most recently supplied;
+     *                           otherwise it is null.
+     */
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +75,13 @@ public class AddSafeLocationActivity extends AppCompatActivity {
         addButton.setOnClickListener(v -> addSafeLocation());
     }
 
+    /**
+     * Reads and trims the address and notes fields, validates that the address
+     * is non-empty, then creates a {SafeLocationInfo} object and writes
+     * it under a unique key in Firebase.  Shows a toast on success and closes
+     * the activity; on failure, shows an error toast.
+     */
+    
     private void addSafeLocation() {
         String address = addressInput.getText().toString().trim();
         String notes = notesInput.getText().toString().trim();
