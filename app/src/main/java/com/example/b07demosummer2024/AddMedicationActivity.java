@@ -13,13 +13,42 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * {AddMedicationActivity} provides a form for the user to add a medication entry
+ * (name + dosage) into Firebase Realtime Database under the current user’s profile.
+ * 
+ * When opened, the activity checks that a user is logged in; if not, it shows a prompt
+ * and closes. On successful submission, it generates a unique key and writes a
+ * {MedicationInfo} object to:
+ * 
+ * /Users/{uid}/medications/{medicationId}
+ * 
+ */
+
 public class AddMedicationActivity extends AppCompatActivity {
 
+    /** Text field for entering the medication’s name (required) and dosage (required). */
     private EditText nameInput, dosageInput;
+    
+    /** Button to confirm and upload the medication entry. */
     private Button addButton;
+
+    /** Reference to the current user’s "medications" node in the database. */
     private DatabaseReference medicationsRef;
+
+    /** FirebaseAuth instance used to verify and fetch the current user. */
     private FirebaseAuth mAuth;
 
+    /**
+     * Initializes the UI, ensures a user is logged in, sets up the
+     * Firebase Database reference, and installs the click listener
+     * for the confirmation button.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down, this Bundle contains
+     *                           the data it most recently supplied; otherwise it is null.
+     */
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +70,14 @@ public class AddMedicationActivity extends AppCompatActivity {
         addButton.setOnClickListener(v -> addMedication());
     }
 
+    /**
+     * Reads and validates the name and dosage fields, then creates a
+     * {MedicationInfo} object and writes it to Firebase under
+     * a unique key. If either field is empty, shows a toast and aborts.
+     * On success, shows confirmation toast and finishes the activity.
+     * On failure, shows the exception message.
+     */
+    
     private void addMedication() {
         String name = nameInput.getText().toString().trim();
         String dosage = dosageInput.getText().toString().trim();
