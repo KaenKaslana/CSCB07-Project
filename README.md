@@ -28,3 +28,10 @@ Features
 *Respective information storage pages for different data categories
 *Store information via complete files or input texts
 *Allow addition, edition and deletion of all information stored
+
+Phoenix Fei - Support Connection, home page
+
+Features
+*Display an organized separate page for direct links to local victim services, hotlines, shelters, legal aid, and police
+*Allow chosing any city by user's own choice
+*Connect all of the buttons to each function in one page
